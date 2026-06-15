@@ -1,0 +1,22 @@
+body{
+    background:#f4f8f4;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-header{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    transition:0.3s;
+}
+
+h1{
+    font-weight:bold;
+}

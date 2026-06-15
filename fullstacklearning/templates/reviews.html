@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Green Plate Nutrition – Reviews</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+/* 🔷 PARALLAX HERO */
+.parallax {
+  background-image: url('ratul-ghosh-e5hucrUutDE-unsplash.jpg');
+  min-height: 100vh;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.parallax h1 {
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.overlay {
+  background: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔷 SECOND PARALLAX SECTION */
+.parallax2 {
+  background-image: url('julia-zolotova-M_xIaxQE3Ms-unsplash.jpg');
+  min-height: 60vh;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.meal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.meal-table th {
+  background: #198754;
+  color: white;
+  font-weight: 700;
+  padding: 12px 16px;
+  border: 1px solid #198754;
+}
+
+.meal-table td {
+  padding: 12px 16px;
+  border: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.meal-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🔷 NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="bi bi-heart-pulse-fill"></i> Green Plate Nutrition
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/quiz">Disease Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="/diet">Diet Plans</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/reviews">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 🔷 PARALLAX HERO -->
+<section class="parallax">
+  <div class="overlay">
+    <div>
+      <h1>Fresh & Organic Fruits 🍎🥦</h1>
+      <p>Healthy food delivered to your home</p>
+      <button class="btn btn-warning btn-lg">Shop Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- 🔷 PRODUCTS -->
+<section id="products" class="container py-5">
+  <h2 class="text-center mb-4">Our Products</h2>
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce" class="card-img-top">
+        <div class="card-body">
+          <h5>Fruits</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999" class="card-img-top">
+        <div class="card-body">
+          <h5>Vegetables</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1606788075761-6e3c1d0b3c72" class="card-img-top">
+        <div class="card-body">
+          <h5>Healthy Packs</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 🔷 HEALTHY PACKS MEAL PLAN -->
+<section class="container py-5">
+  <h2 class="text-center mb-4">Healthy Packs Meal Plan</h2>
+  <div class="table-responsive">
+    <table class="table meal-table align-middle">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Meal Plan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monday</td>
+          <td>One bowl of proteins like sprouts, fruits, and leafy vegetables.</td>
+        </tr>
+        <tr>
+          <td>Tuesday</td>
+          <td>Mixed salad with chickpeas, cucumber, tomatoes, and a side of fresh fruit.</td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>Oat porridge with nuts and berries, steamed greens, and a glass of buttermilk.</td>
+        </tr>
+        <tr>
+          <td>Thursday</td>
+          <td>Grilled paneer or tofu with sautéed spinach, carrots, and a few slices of apple.</td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td>Brown rice with dal, a side of leafy vegetables, and a small fruit bowl.</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>Fruit smoothie with spinach, banana, and a handful of nuts, plus a protein sprout bowl.</td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td>Vegetable soup, whole grain toast, and a leafy green salad with seeds.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 🔷 PARALLAX BANNER -->
+<section class="parallax2 d-flex align-items-center justify-content-center text-white">
+  <h2 style="background:rgba(0,0,0,0.5); padding:20px;">
+    Eat Fresh. Stay Healthy 🥗
+  </h2>
+</section>
+
+<!-- 🔷 REVIEWS -->
+<section id="reviews" class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Customer Reviews</h2>
+
+    <div class="row mb-5">
+      <div class="col-md-4">
+        <div class="card p-3">⭐⭐⭐⭐⭐ Priya<br>Very fresh fruits!</div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3">⭐⭐⭐⭐⭐ Rahul<br>Best quality vegetables.</div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3">⭐⭐⭐⭐⭐ Anjali<br>Excellent service.</div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card p-4 shadow-sm">
+          <h3 class="mb-3">Leave Your Review</h3>
+          <form action="/submit_review" method="post">
+            <div class="mb-3">
+              <label class="form-label">Your Name</label>
+              <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Rating</label>
+              <select name="rating" class="form-select" required>
+                <option value="">Select rating</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Review</label>
+              <textarea name="review" class="form-control" rows="4" placeholder="Write your review" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🔷 FOOTER -->
+<footer class="bg-success text-white text-center p-3">
+  © 2026 Green Plate Nutrition
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

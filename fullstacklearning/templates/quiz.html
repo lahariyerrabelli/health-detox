@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disease Identifier Quiz - Green Plate Nutrition</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --green-dark: #145a32;
+  --green-mid: #1e8449;
+  --green-btn: #27ae60;
+  --green-light: #eafaf1;
+  --accent: #f39c12;
+}
+
+body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #eafaf1 0%, #f4f8f4 60%); }
+.navbar { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+.quiz-container { max-width: 700px; margin: 0 auto; padding: 20px; }
+.quiz-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 40px; margin: 40px 0; }
+
+.quiz-progress { background: #e0ece4; height: 8px; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+.quiz-progress-bar { background: var(--green-btn); height: 100%; transition: width 0.3s; }
+
+.question-group { margin-bottom: 30px; }
+.question-title { font-size: 1.3rem; font-weight: 700; color: var(--green-dark); margin-bottom: 20px; }
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  text-align: left;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.option-btn:hover { border-color: var(--green-btn); background: #f0f8f5; }
+.option-btn.selected { border-color: var(--green-btn); background: var(--green-light); font-weight: 600; color: var(--green-dark); }
+
+.btn-next { background: var(--green-btn); color: white; font-weight: 600; width: 100%; padding: 12px; border: none; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+.btn-next:hover { background: var(--green-mid); }
+.btn-next:disabled { background: #ccc; cursor: not-allowed; }
+
+.results-card { background: linear-gradient(135deg, var(--green-light) 0%, white 100%); border-radius: 16px; padding: 30px; margin: 30px 0; border-left: 6px solid var(--green-btn); }
+.results-title { font-size: 1.4rem; font-weight: 800; color: var(--green-dark); margin-bottom: 20px; }
+.result-section { margin-top: 24px; padding-top: 24px; border-top: 2px solid #ddd; }
+.result-section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+.section-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 10px; }
+.section-content { font-size: 0.95rem; color: #333; line-height: 1.8; }
+.section-content ul { margin: 12px 0 0 0; padding-left: 20px; }
+.section-content li { margin-bottom: 8px; }
+.section-content strong { color: var(--green-dark); }
+
+.diet-recommendation { background: #fff8e1; border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; margin-top: 12px; }
+.diet-recommendation h5 { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
+.diet-recommendation p { margin: 0; font-size: 0.9rem; }
+
+.tracker-panel { background: #f6ffed; border: 1px solid #c7f0d9; border-radius: 12px; padding: 18px; }
+.tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.tracker-value { font-size: 2rem; font-weight: 700; color: var(--green-dark); margin: 10px 0; text-align: center; }
+.tracker-bar { background: #e4f3dd; border-radius: 999px; height: 12px; margin: 8px 0 10px; overflow: hidden; }
+.tracker-bar-fill { height: 100%; background: var(--green-btn); width: 0%; transition: width 0.25s ease; border-radius: 999px; }
+.tracker-button { display: inline-block; width: calc(50% - 8px); margin: 4px 4px 0 0; padding: 10px 12px; border: none; border-radius: 8px; background: var(--green-btn); color: white; cursor: pointer; font-weight: 700; }
+.tracker-button:hover { background: var(--green-mid); }
+
+.technique-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+.technique-box { padding: 14px; border-radius: 8px; font-size: 0.9rem; }
+.technique-ancient { background: #fef9e7; border: 1px solid #f0d060; }
+.technique-modern { background: #eaf4fb; border: 1px solid #aed6f1; }
+.technique-box h6 { font-weight: 700; margin-bottom: 8px; font-size: 0.85rem; }
+.technique-box ul { margin: 0; padding-left: 16px; font-size: 0.85rem; }
+.technique-box li { margin-bottom: 4px; }
+
+.btn-view-diet { background: var(--green-btn); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 16px; }
+.btn-view-diet:hover { background: var(--green-mid); color: white; }
+
+.btn-retake { background: #6c757d; color: white; padding: 10px 20px; border-radius: 8px; margin-top: 16px; border: none; cursor: pointer; font-weight: 600; }
+.btn-retake:hover { background: #5a6268; }
+
+.alert-custom { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+
+@media (max-width: 600px) {
+  .quiz-card { padding: 24px; }
+  .technique-grid { grid-template-columns: 1fr; }
+  .results-card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">
+      <i class="bi bi-heart-pulse-fill"></i> Green Plate Nutrition
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house-fill"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/quiz"><i class="bi bi-question-circle-fill"></i> Disease Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="/diet"><i class="bi bi-journal-medical"></i> Diet Plans</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact"><i class="bi bi-envelope-fill"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="quiz-container">
+
+  <!-- QUIZ SECTION -->
+  <div id="quizSection">
+    <div class="quiz-card">
+      <h1 style="color:var(--green-dark);margin-bottom:30px;text-align:center;">
+        <i class="bi bi-clipboard-check"></i> Disease Identifier Quiz
+      </h1>
+      <p style="text-align:center;color:#666;margin-bottom:30px;">Answer a few questions to identify your disease type and get personalized recommendations.</p>
+
+      <div id="selectionContent" style="margin-top:30px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+          <button type="button" class="option-btn" onclick="startQuiz('diabetes')">🩸<br>Diabetes</button>
+          <button type="button" class="option-btn" onclick="startQuiz('bloodpressure')">❤️<br>Blood Pressure</button>
+          <button type="button" class="option-btn" onclick="startQuiz('fever')">🤒<br>Fever</button>
+          <button type="button" class="option-btn" onclick="startQuiz('headache')">🤕<br>Headache</button>
+          <button type="button" class="option-btn" onclick="startQuiz('cancer')">🎗<br>Cancer</button>
+        </div>
+      </div>
+
+      <div id="quizQuestionContent" style="display:none; margin-top:30px;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" id="quizProgressBar" style="width:0%;"></div>
+        </div>
+        <div id="quizContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SECTION -->
+  <div id="resultsSection" style="display:none;">
+    <div style="text-align:center;margin:40px 0;">
+      <h1 style="color:var(--green-dark);"><i class="bi bi-check-circle-fill" style="color:var(--green-btn);"></i> Your Assessment Results</h1>
+    </div>
+
+    <div class="alert-custom">
+      ⚠️ <strong>Disclaimer:</strong> This quiz is for educational purposes only and cannot replace professional medical diagnosis. Always consult a qualified doctor for proper diagnosis and treatment.
+    </div>
+
+    <div id="resultsContent"></div>
+
+    <div style="text-align:center;margin:40px 0;">
+      <button class="btn-retake" onclick="resetQuiz()">🔄 Retake Quiz</button>
+      <a href="/diet" class="btn-view-diet" style="margin-left:10px;">📋 View Diet Plans</a>
+      <a href="/" class="btn-view-diet" style="background:#6c757d;margin-left:10px;">🏠 Go Home</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const quizData = {
+  diabetes: {
+    questions: [
+      { text: "How often do you feel extremely thirsty?", options: ["Rarely", "Sometimes", "Very frequently"] },
+      { text: "How often do you urinate during the day?", options: ["Normal", "A little more than usual", "Many times"] },
+      { text: "How would you describe your energy level?", options: ["High", "Moderate", "Low and tired"] },
+      { text: "Do you feel sudden hunger even after eating?", options: ["No", "Sometimes", "Often"] },
+      { text: "Do you notice blurred vision at times?", options: ["Never", "Occasionally", "Frequently"] },
+      { text: "Have you had slow-healing cuts or wounds?", options: ["No", "A few times", "Yes, often"] },
+      { text: "Do you experience tingling or numbness in feet or hands?", options: ["No", "Sometimes", "Yes"] },
+      { text: "How often do you feel excessively tired after light activity?", options: ["Rarely", "Sometimes", "Frequently"] },
+      { text: "Do you have a family history of diabetes?", options: ["No", "One parent", "Multiple relatives"] },
+      { text: "Have you noticed sudden weight change without dieting?", options: ["No", "Slight change", "Significant change"] }
+    ],
+    types: {
+      type1: { name: "Type 1 Diabetes (Insulin-Dependent)", score: 0 },
+      type2: { name: "Type 2 Diabetes (Non-Insulin)", score: 0 }
+    }
+  },
+  bloodpressure: {
+    questions: [
+      { text: "Do you experience headaches often?", options: ["No", "Sometimes", "Frequently"] },
+      { text: "Do you feel dizzy or lightheaded?", options: ["No", "Occasionally", "Often"] },
+      { text: "How often do you feel chest discomfort or tightness?", options: ["Never", "Sometimes", "Often"] },
+      { text: "How much salt do you add to your meals?", options: ["Very little", "Moderate", "A lot"] },
+      { text: "How often do you exercise each week?", options: ["5+ days", "2-3 days", "Less than 2 days"] },
+      { text: "Do you feel short of breath during normal activity?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Do you have a family history of hypertension?", options: ["No", "One parent", "Multiple relatives"] },
+      { text: "How often do you have stress or anxiety?", options: ["Rarely", "Sometimes", "Often"] },
+      { text: "Do you experience nosebleeds or flushed face?", options: ["No", "Occasionally", "Often"] },
+      { text: "Have you been told your blood pressure is elevated?", options: ["No", "Borderline", "Yes"] }
+    ],
+    types: {
+      normal: { name: "Normal Blood Pressure", score: 0 },
+      elevated: { name: "Elevated Blood Pressure", score: 0 },
+      stage1: { name: "Stage 1 Hypertension", score: 0 },
+      stage2: { name: "Stage 2 Hypertension", score: 0 }
+    }
+  },
+  fever: {
+    questions: [
+      { text: "What is your current body temperature?", options: ["Below 99°F", "99-101°F", "Above 101°F"] },
+      { text: "How long have you had fever symptoms?", options: ["Less than 2 days", "2-5 days", "More than 5 days"] },
+      { text: "Do you have a cough or sore throat?", options: ["No", "Mild", "Severe"] },
+      { text: "Are you experiencing muscle or joint pain?", options: ["No", "Mild", "Strong"] },
+      { text: "Do you have a headache with the fever?", options: ["No", "Occasional", "Severe"] },
+      { text: "Have you noticed a rash or skin spots?", options: ["No", "Possible", "Yes"] },
+      { text: "Have you had nausea, vomiting, or abdominal pain?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Have you recently been bitten by mosquitoes?", options: ["No", "Maybe", "Yes"] },
+      { text: "Have you experienced bleeding gums or bruising?", options: ["No", "Rarely", "Yes"] },
+      { text: "Do you feel extremely weak or dehydrated?", options: ["No", "Somewhat", "Yes"] }
+    ],
+    types: {
+      viral: { name: "Viral Fever", score: 0 },
+      bacterial: { name: "Bacterial Fever", score: 0 },
+      dengue: { name: "Dengue Fever", score: 0 }
+    }
+  },
+  headache: {
+    questions: [
+      { text: "How often do you get headaches?", options: ["Rarely", "2-4 times/month", "More than 4 times/month"] },
+      { text: "What type of pain do you feel?", options: ["Dull pressure", "Throbbing", "Sharp stabbing"] },
+      { text: "Do lights or sounds bother you?", options: ["No", "Sometimes", "Yes, strongly"] },
+      { text: "Do you feel nausea or vomiting with the headache?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Do headaches wake you up from sleep?", options: ["Never", "Occasionally", "Often"] },
+      { text: "Are you able to continue daily activity during a headache?", options: ["Yes", "With difficulty", "No"] },
+      { text: "Do you notice one-sided head pain?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Do you experience aura or visual changes before pain?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Do your headaches follow a daily schedule or cluster?", options: ["No pattern", "Occasional", "Yes, clusters"] },
+      { text: "How do pain relievers affect your headache?", options: ["They help", "Help a little", "No relief"] }
+    ],
+    types: {
+      tension: { name: "Tension Headache", score: 0 },
+      migraine: { name: "Migraine", score: 0 },
+      cluster: { name: "Cluster Headache", score: 0 }
+    }
+  },
+  cancer: {
+    questions: [
+      { text: "Have you noticed unexplained lumps or swelling?", options: ["No", "Not sure", "Yes"] },
+      { text: "Have you experienced unexplained weight loss?", options: ["No", "Slight", "Significant"] },
+      { text: "Do you have persistent pain in one area?", options: ["No", "Occasionally", "Yes"] },
+      { text: "Have you had chronic cough or throat changes?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Do you have bleeding from unusual places?", options: ["No", "Rarely", "Yes"] },
+      { text: "Have you experienced ongoing fatigue?", options: ["No", "Sometimes", "Yes"] },
+      { text: "Is there a strong family history of cancer?", options: ["No", "Some", "Yes"] },
+      { text: "Have you had difficulty swallowing or digestion changes?", options: ["No", "Occasionally", "Yes"] },
+      { text: "Do you have skin changes or persistent sores?", options: ["No", "Maybe", "Yes"] },
+      { text: "Have you skipped regular health screenings?", options: ["No", "Occasionally", "Yes"] }
+    ],
+    types: {
+      lowrisk: { name: "Low Risk - Prevention Focus", score: 0 },
+      moderaterisk: { name: "Moderate Risk - Regular Screening", score: 0 },
+      highrisk: { name: "High Risk - Medical Consultation Urgent", score: 0 }
+    }
+  }
+};
+
+const foodBowlInfo = {
+  diabetes: {
+    type1: {
+      veggies: "Bitter gourd, spinach, bottle gourd, fenugreek leaves, cucumber",
+      fruits: "Apple, guava, berries, papaya, pomegranate",
+      tip: "Eat 3 servings of veggies and 2 servings of low-sugar fruits every day to help control blood sugar."
+    },
+    type2: {
+      veggies: "Spinach, kale, broccoli, zucchini, green beans",
+      fruits: "Apple, guava, citrus, berries, pear",
+      tip: "Choose fiber-rich vegetables and fruits with low glycemic impact to support healthy sugar levels."
+    }
+  },
+  bloodpressure: {
+    normal: {
+      veggies: "Leafy greens, carrots, beetroot, bell pepper, cucumber",
+      fruits: "Banana, apple, berries, orange, pear",
+      tip: "Keep your plate colorful and hydrate well to maintain stable blood pressure."
+    },
+    elevated: {
+      veggies: "Spinach, celery, broccoli, tomato, zucchini",
+      fruits: "Berries, pears, oranges, kiwi, apple",
+      tip: "Limit salt and include potassium-rich fruits and vegetables in every meal."
+    },
+    stage1: {
+      veggies: "Kale, spinach, beetroot, garlic, sweet potato",
+      fruits: "Berries, apple, grapefruit, pomegranate, pear",
+      tip: "Eat plenty of whole vegetables and fruits, and avoid processed snacks to support BP control."
+    },
+    stage2: {
+      veggies: "Broccoli, spinach, cucumber, tomato, swiss chard",
+      fruits: "Berries, citrus, apple, pear, guava",
+      tip: "Focus on DASH-style meals with vegetables, fruits, and low sodium to reduce pressure."
+    }
+  },
+  fever: {
+    viral: {
+      veggies: "Carrot, bottle gourd, spinach, pumpkin, bottle gourd",
+      fruits: "Orange, papaya, apple, lemon, pomegranate",
+      tip: "Choose light, hydrating vegetables and vitamin C fruits to support recovery."
+    },
+    bacterial: {
+      veggies: "Spinach, leafy greens, carrot, cucumber, celery",
+      fruits: "Lemon, berries, apple, guava, papaya",
+      tip: "Stay hydrated and eat nutrient-dense fruits and vegetables to support immune response."
+    },
+    dengue: {
+      veggies: "Beetroot, spinach, cucumber, tomato, carrots",
+      fruits: "Papaya, pomegranate, orange, berries, coconut water",
+      tip: "Choose fluids and foods rich in vitamins, minerals, and gentle fiber while resting."
+    }
+  },
+  headache: {
+    tension: {
+      veggies: "Spinach, broccoli, sweet potato, zucchini, bell pepper",
+      fruits: "Banana, berries, apple, pear, watermelon",
+      tip: "Keep hydrated and include magnesium-rich vegetables and calming fruits daily."
+    },
+    migraine: {
+      veggies: "Spinach, beetroot, celery, cucumber, broccoli",
+      fruits: "Berries, cherries, orange, apple, pear",
+      tip: "Avoid trigger foods and fill bowls with fresh greens and low-sugar fruits."
+    },
+    cluster: {
+      veggies: "Kale, spinach, cucumber, celery, zucchini",
+      fruits: "Avocado, berries, pear, apple, guava",
+      tip: "Balance meals with leafy greens and fruits to support overall vascular health."
+    }
+  },
+  cancer: {
+    lowrisk: {
+      veggies: "Broccoli, cauliflower, spinach, carrots, tomatoes",
+      fruits: "Berries, citrus, pomegranate, apple, kiwi",
+      tip: "Focus on antioxidant-rich vegetables and fruits to support prevention."
+    },
+    moderaterisk: {
+      veggies: "Kale, broccoli, mushrooms, bell peppers, leafy greens",
+      fruits: "Berries, orange, pomegranate, apple, pear",
+      tip: "Choose whole plant-based bowls to help reduce risk and support immunity."
+    },
+    highrisk: {
+      veggies: "Broccoli, spinach, tomato, carrots, cabbage",
+      fruits: "Berries, citrus, guava, apple, pomegranate",
+      tip: "Include nutrient-dense vegetables and fruits alongside medical guidance."
+    }
+  }
+};
+
+const diseaseInfo = {
+  diabetes: {
+    type1: {
+      name: "Type 1 Diabetes (Insulin-Dependent)",
+      symptoms: "Sudden increased thirst, frequent urination, extreme fatigue, irritability, fruity-smelling breath, blurred vision, bed-wetting in children",
+      tests: "Fasting blood glucose (>126 mg/dL), Hemoglobin A1C (>6.5%), Random blood glucose test, C-peptide test, Autoantibody tests",
+      precautions: "Daily insulin injections, Monitor blood sugar regularly, Carbohydrate counting, Regular exercise, Consistent meal times, Check for diabetic complications",
+      ancient: "Neem leaves juice, Fenugreek seeds (methi), Bitter gourd (karela), Turmeric with milk, Cinnamon water, Ayurvedic herbs (Gymnema, Vijaysar)",
+      modern: "Insulin therapy (multiple daily injections or pump), Continuous glucose monitoring (CGM), Ketogenic diet guidance, Regular endocrinology checkups, DPP-4 inhibitors"
+    },
+    type2: {
+      name: "Type 2 Diabetes (Non-Insulin)",
+      symptoms: "Gradual onset, increased thirst, frequent urination, fatigue, slow-healing wounds, numbness in feet, blurred vision, recurrent infections",
+      tests: "Fasting blood glucose (100-125 mg/dL prediabetes), Hemoglobin A1C (5.7-6.4% prediabetes), Oral glucose tolerance test, Lipid panel",
+      precautions: "Weight management, Regular blood sugar monitoring, Exercise 150 min/week, Limit sugar and refined carbs, Manage stress, Regular health checkups",
+      ancient: "Jamun (black plum) seed powder, Neem leaves, Gudmar herb, Methi seeds soaked overnight, Turmeric, Bitter melon, Triphala",
+      modern: "Metformin (first-line), GLP-1 agonists, SGLT2 inhibitors, Sulfonylureas, Low glycemic index diet, Weight loss programs, Exercise interventions"
+    }
+  },
+  bloodpressure: {
+    normal: {
+      name: "Normal Blood Pressure",
+      systolic: "Below 120 mmHg",
+      diastolic: "Below 80 mmHg",
+      symptoms: "Usually no symptoms, good energy levels, no headaches or dizziness",
+      tests: "Annual BP check, Lipid panel annually, Regular health screening",
+      precautions: "Maintain healthy weight, Exercise regularly (30 min daily), Low sodium diet, Limit alcohol, Manage stress, Avoid smoking",
+      ancient: "Garlic consumption, Coconut water, Yoga (Pranayama), Meditation, Ashwagandha, Brahmi",
+      modern: "DASH diet, Regular cardio exercise, BP monitoring at home, Sodium reduction to <2300mg/day, Stress management programs"
+    },
+    elevated: {
+      name: "Elevated Blood Pressure",
+      systolic: "120-129 mmHg and Diastolic <80 mmHg",
+      symptoms: "Usually no symptoms, but at risk for hypertension",
+      tests: "BP monitoring every 3-6 months, Fasting glucose, Lipid profile, Kidney function tests",
+      precautions: "Lifestyle modifications essential, Reduce sodium, Increase physical activity, Weight loss if overweight, Stress management",
+      ancient: "Brahmi herb, Sarpagandha (Indian snakeroot), Ajwain water, Fenugreek, Ginger-turmeric tea",
+      modern: "DASH diet strictly, 40-60 min brisk walking daily, ACE inhibitors if needed, Home BP monitoring, Dietary sodium <1500mg/day"
+    },
+    stage1: {
+      name: "Stage 1 Hypertension",
+      systolic: "130-139 mmHg or Diastolic 80-89 mmHg",
+      symptoms: "Occasional headaches, mild fatigue, dizziness sometimes",
+      tests: "BP check every month, Lipid panel, Kidney function (creatinine, BUN), Urine protein test, ECG",
+      precautions: "Strict dietary changes, Daily exercise mandatory, BP monitoring twice weekly, Alcohol limit to 1 drink/day, No smoking",
+      ancient: "Hibiscus tea, Arjuna bark decoction, Ashwagandha, Brahmi Vati, Rauwolfia serpentina, Meditation",
+      modern: "ACE inhibitors, Thiazide diuretics, DASH diet, 150 min aerobic exercise/week, Stress reduction therapy, Weight loss 5-10%"
+    },
+    stage2: {
+      name: "Stage 2 Hypertension",
+      systolic: "140+ mmHg or Diastolic 90+ mmHg",
+      symptoms: "Frequent headaches, dizziness, shortness of breath, chest pain possible",
+      tests: "Monthly BP monitoring, ECG, Echocardiogram, Kidney function panel, 24-hour ambulatory BP monitoring, Eye exam for damage",
+      precautions: "Urgent medication needed, Strict lifestyle changes, Daily exercise, Regular doctor visits (every 2-4 weeks), Sodium <1500mg/day, Complete alcohol avoidance",
+      ancient: "Brahmi Ghee, Ashwagandha with milk, Sarpagandha under Ayurvedic supervision, Meditation (Transcendental), Yoga poses (Uttanasana, Paschimottanasana)",
+      modern: "Combination medications (ACE inhibitor + calcium channel blocker), Frequent monitoring, Cardiology consultation, Sodium-potassium balance monitoring, Lifestyle program"
+    }
+  },
+  fever: {
+    viral: {
+      name: "Viral Fever",
+      symptoms: "Fever 101-102°F, Body aches, Fatigue, Cough, Sore throat, No rash typically",
+      tests: "Complete blood count (CBC), Blood culture (if high fever), Throat swab culture, Viral serology test, Chest X-ray if pneumonia suspected",
+      precautions: "Rest and fluids, Paracetamol/Ibuprofen for fever, Isolation for 5-7 days, No antibiotics (ineffective on viruses), Hand hygiene",
+      ancient: "Tulsi tea with ginger and honey, Turmeric milk, Neem leaves decoction, Garlic soup, Ginger-lemon tea, Mulethi (licorice) root",
+      modern: "Supportive care (fluids, rest), Antipyretics, Antihistamines for cough, Cough syrups, Isolation protocols, Oxygen if needed"
+    },
+    bacterial: {
+      name: "Bacterial Fever",
+      symptoms: "High fever >102°F, Sudden onset, Body aches, Weakness, Cough, Often yellow/green sputum",
+      tests: "Blood culture test, Complete blood count, Chest X-ray, Throat culture, Sputum culture, Urine culture",
+      precautions: "Antibiotics mandatory (as per culture), Rest, Fluids, Isolation until 24 hours after antibiotics, Supportive care, Follow doctor's instructions strictly",
+      ancient: "Neem leaves boiled in water, Garlic and honey mixture, Turmeric with sesame oil, Brahmi and ashwagandha powder, Tulsi with black cumin",
+      modern: "Broad-spectrum antibiotics initially, then targeted therapy post-culture, Antipyretics, Supportive care, Hospitalization if severe, IV fluids"
+    },
+    dengue: {
+      name: "Dengue Fever",
+      symptoms: "High fever 104-105°F, Severe headache, Joint/muscle pain (break-bone fever), Rash on trunk, Bleeding gums, Muscle pain for weeks",
+      tests: "Dengue NS1 antigen test, Dengue IgM antibodies, Complete blood count, Platelet count (critical), Liver function tests, Daily monitoring",
+      precautions: "Hospitalization if platelets <100,000, Rest mandatory, Avoid NSAIDs (bleeding risk), Increase fluid intake, Platelet transfusion if needed",
+      ancient: "Papaya leaf extract (platelet booster), Tulsi with turmeric, Ginger-garlic decoction, Neem leaves juice, Coconut water, Pomegranate juice",
+      modern: "Supportive care only (no specific antiviral), Platelet transfusions, Fluid management, Antipyretics (paracetamol only), ICU care if dengue hemorrhagic fever"
+    }
+  },
+  headache: {
+    tension: {
+      name: "Tension Headache",
+      symptoms: "Pressure-like pain on both sides, Mild to moderate intensity, Not throbbing, No nausea usually, Can last 30 min to several hours",
+      tests: "Physical examination, Blood pressure check, Usually no blood tests needed, CT scan only if persistent",
+      precautions: "Stress management, Neck exercises, Good posture, Sleep 7-8 hours, Limit screen time, Stretching exercises",
+      ancient: "Brahmi oil head massage, Sesame oil application, Neem and coconut oil mix, Lavender aroma, Meditation and deep breathing",
+      modern: "Muscle relaxants, Aspirin or ibuprofen, Cognitive behavioral therapy, Yoga stretches, Neck physical therapy, Botox injection (chronic cases)"
+    },
+    migraine: {
+      name: "Migraine",
+      symptoms: "Throbbing pain one side of head, Lasts 4-72 hours, Photosensitivity, Nausea/vomiting, Aura (visual disturbances) possible",
+      tests: "CT scan or MRI (if first migraine or change in pattern), Blood tests to rule out other conditions",
+      precautions: "Identify triggers (foods, stress, hormones), Avoid trigger foods (chocolate, cheese, caffeine, alcohol), Stay hydrated, Regular sleep",
+      ancient: "Ginger-turmeric paste on forehead, Brahmi oil massage, Lavender essential oil, Neem and turmeric, Fenugreek paste",
+      modern: "Sumatriptan or other triptans, Preventive medications (beta-blockers, antidepressants), Botox for chronic migraine, Lifestyle tracking app"
+    },
+    cluster: {
+      name: "Cluster Headache",
+      symptoms: "Severe, sharp, piercing pain around one eye, Tears from eye, Nasal congestion, Restless feeling, Occurs in clusters (weeks/months)",
+      tests: "MRI brain scan (to rule out aneurysm), CT scan, Neurological examination",
+      precautions: "Avoid alcohol and smoking triggers, Maintain regular sleep schedule, Oxygen therapy, Lie down in dark, quiet place",
+      ancient: "Brahmi Vati daily, Meditation, Ashwagandha, Cooling herbs like rose water, Sesame oil massage at night",
+      modern: "High-flow oxygen during attack, Triptans (subcutaneous), Verapamil for prevention, Nerve blocks, Neuromodulation devices"
+    }
+  },
+  cancer: {
+    lowrisk: {
+      name: "Low Risk - Prevention Focus",
+      symptoms: "No specific symptoms, focus on prevention",
+      tests: "Annual health checkups, Age-appropriate screenings (mammogram 40+, colonoscopy 45+, PSA test for men 50+), Skin checks annually",
+      precautions: "Quit smoking/avoid smoke, Limit alcohol, Healthy weight maintenance, Regular exercise (150 min/week), Sun protection (SPF 30+), Limit red meat",
+      ancient: "Turmeric (curcumin), Green herbs (neem, amla), Ashwagandha, Tulsi daily, Ginger tea, Antioxidant-rich spices",
+      modern: "HPV vaccination, Balanced diet with whole grains, Regular mammography/colonoscopy, Genetic testing if family history, Immunotherapy awareness"
+    },
+    moderaterisk: {
+      name: "Moderate Risk - Regular Screening",
+      symptoms: "May have family history or lifestyle factors, Requires vigilant screening",
+      tests: "Screening every 6-12 months (mammogram, PSA, colonoscopy based on type), Tumor markers if indicated, Advanced imaging (CT, MRI) as needed",
+      precautions: "Genetic counseling if family history strong, Smoking cessation mandatory, Monthly self-exams (breasts, skin), Stress management, Healthy eating, Exercise",
+      ancient: "Ashwagandha daily supplement, Turmeric with black pepper, Neem and tulsi tea, Green herbs consumption, Meditation practice",
+      modern: "Gene testing (BRCA1/2 if applicable), Prophylactic surgery consideration, Advanced cancer vaccines, Targeted prevention programs, Oncology consultation"
+    },
+    highrisk: {
+      name: "High Risk - Medical Consultation Urgent",
+      symptoms: "Suspicious symptoms present, Strong family history, Genetic predisposition",
+      tests: "URGENT: Genetic testing (BRCA, LYNCH, etc.), Immediate screening (mammogram, colonoscopy, CT, MRI), Tumor markers, Biopsy if indicated, Oncology referral",
+      precautions: "SEEK ONCOLOGIST IMMEDIATELY, Prophylactic measures (preventive surgery if BRCA+), Enhanced screening protocols, Lifestyle changes (quit smoking, alcohol), Psychological support",
+      ancient: "Brahmi-ashwagandha combination, Turmeric-ginger decoction, Daily meditation, Pranayama breathing, Supportive Ayurvedic care alongside medical treatment",
+      modern: "URGENT genetic counseling, Possible prophylactic mastectomy/oophorectomy if BRCA+, Immunotherapy trials, Enhanced surveillance program, Oncology team management"
+    }
+  }
+};
+
+let currentDisease = null;
+let currentStep = 0;
+let currentSelectedType = null;
+let userAnswers = [];
+
+function startQuiz(disease) {
+  currentDisease = disease;
+  currentStep = 0;
+  userAnswers = [];
+  document.getElementById('selectionContent').style.display = 'none';
+  document.getElementById('quizQuestionContent').style.display = 'block';
+  document.getElementById('resultsSection').style.display = 'none';
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const questions = quizData[currentDisease].questions;
+  const totalQuestions = questions.length;
+  const progress = ((currentStep + 1) / totalQuestions) * 100;
+  document.getElementById('quizProgressBar').style.width = progress + '%';
+
+  if (currentStep < questions.length) {
+    const question = questions[currentStep];
+    let html = `
+      <div class="question-group">
+        <div class="question-title">Question ${currentStep + 1} of ${totalQuestions}</div>
+        <div class="question-title" style="font-size:1.15rem;margin-bottom:24px;">${question.text}</div>
+    `;
+
+    question.options.forEach((option, idx) => {
+      html += `<button type="button" class="option-btn" onclick="selectOption(${idx})">${option}</button>`;
+    });
+
+    html += `<button type="button" class="btn-next" onclick="nextQuestion()" id="nextButton" disabled>Next Question →</button>`;
+    
+    document.getElementById('quizContent').innerHTML = html;
+  }
+}
+
+function selectOption(idx) {
+  userAnswers[currentStep] = idx;
+  const buttons = document.querySelectorAll('#quizContent .option-btn');
+  buttons.forEach((btn, i) => {
+    if (i === idx) btn.classList.add('selected');
+    else btn.classList.remove('selected');
+  });
+  const nextBtn = document.getElementById('nextButton');
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function nextQuestion() {
+  currentStep++;
+  const questions = quizData[currentDisease].questions;
+  
+  if (currentStep < questions.length) {
+    renderQuizQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function resetQuiz() {
+  document.getElementById('quizSection').style.display = 'block';
+  document.getElementById('selectionContent').style.display = 'block';
+  document.getElementById('quizQuestionContent').style.display = 'none';
+  document.getElementById('quizContent').innerHTML = '';
+  document.getElementById('quizProgressBar').style.width = '0%';
+  document.getElementById('resultsSection').style.display = 'none';
+}
+
+function showResults() {
+  document.getElementById('quizSection').style.display = 'none';
+  document.getElementById('resultsSection').style.display = 'block';
+  
+  const totalScore = userAnswers.reduce((a, b) => a + b, 0);
+  const averageScore = totalScore / userAnswers.length;
+  let selectedType = null;
+  let summaryText = '';
+
+  if (currentDisease === 'diabetes') {
+    if (totalScore <= 9) {
+      selectedType = 'type2';
+      summaryText = 'Your answers suggest a Type 2 diabetes profile, with lifestyle changes and dietary control as the first step.';
+    } else {
+      selectedType = 'type1';
+      summaryText = 'Your answers indicate more severe symptoms that align with Type 1 diabetes; medical evaluation for insulin management is important.';
+    }
+  } else if (currentDisease === 'bloodpressure') {
+    if (totalScore <= 7) {
+      selectedType = 'normal';
+      summaryText = 'Your responses are consistent with normal blood pressure, but continue healthy habits and regular monitoring.';
+    } else if (totalScore <= 12) {
+      selectedType = 'elevated';
+      summaryText = 'Your profile suggests elevated blood pressure; reduce salt, manage stress, and monitor frequently.';
+    } else if (totalScore <= 16) {
+      selectedType = 'stage1';
+      summaryText = 'This looks like Stage 1 hypertension; medical guidance and lifestyle changes are recommended.';
+    } else {
+      selectedType = 'stage2';
+      summaryText = 'This result indicates Stage 2 hypertension; seek prompt medical care for medication and monitoring.';
+    }
+  } else if (currentDisease === 'fever') {
+    if (totalScore <= 8) {
+      selectedType = 'viral';
+      summaryText = 'The pattern is most consistent with viral fever; rest, fluids, and symptom management are important.';
+    } else if (totalScore <= 14) {
+      selectedType = 'bacterial';
+      summaryText = 'The symptoms point toward bacterial fever; a doctor may need to evaluate antibiotic treatment.';
+    } else {
+      selectedType = 'dengue';
+      summaryText = 'The signs match dengue fever risk; please seek urgent medical attention for proper testing and care.';
+    }
+  } else if (currentDisease === 'headache') {
+    if (totalScore <= 8) {
+      selectedType = 'tension';
+      summaryText = 'This indicates tension headache patterns; stress relief, posture, and relaxation can help significantly.';
+    } else if (totalScore <= 14) {
+      selectedType = 'migraine';
+      summaryText = 'These answers align with migraine symptoms; identify triggers and consult a doctor for preventive options.';
+    } else {
+      selectedType = 'cluster';
+      summaryText = 'Your answers suggest cluster headache; specialist evaluation and targeted therapy are recommended.';
+    }
+  } else if (currentDisease === 'cancer') {
+    if (totalScore <= 8) {
+      selectedType = 'lowrisk';
+      summaryText = 'The quiz result is low risk, but maintain screenings and preventive care to stay safe.';
+    } else if (totalScore <= 15) {
+      selectedType = 'moderaterisk';
+      summaryText = 'This suggests moderate risk; regular cancer screening and follow-up with a healthcare provider are advised.';
+    } else {
+      selectedType = 'highrisk';
+      summaryText = 'This result indicates higher risk and warrants urgent medical evaluation for appropriate testing.';
+    }
+  }
+
+  const diseaseType = diseaseInfo[currentDisease][selectedType];
+  const typeData = quizData[currentDisease].types[selectedType];
+  const foodBowl = foodBowlInfo[currentDisease][selectedType];
+  currentSelectedType = selectedType;
+
+  let html = `
+    <div class="results-card">
+      <div class="results-title">✓ Your Identified Type: ${typeData.name}</div>
+  `;
+
+  // Symptoms
+  html += `
+    <div class="result-section">
+      <div class="section-label">🔍 Summary</div>
+      <div class="section-content">${summaryText}</div>
+    </div>
+  `;
+
+  html += `
+    <div class="result-section">
+      <div class="section-label">🩺 Symptoms to Watch For</div>
+      <div class="section-content">${diseaseType.symptoms}</div>
+    </div>
+  `;
+
+  html += `
+    <div class="result-section">
+      <div class="section-label">🏥 Recommended Tests</div>
+      <div class="section-content">${diseaseType.tests}</div>
+    </div>
+  `;
+
+  // Food bowl guidance
+  html += `
+    <div class="result-section">
+      <div class="section-label">🥗 Veg & Fruit Bowl Guide</div>
+      <div class="section-content">
+        <strong>Selected profile:</strong> ${typeData.name}<br>
+        <strong>Vegetables to include:</strong> ${foodBowl.veggies}<br>
+        <strong>Fruits to include:</strong> ${foodBowl.fruits}<br>
+        <em>${foodBowl.tip}</em>
+      </div>
+    </div>
+  `;
+
+  // Tracker panel
+  html += `
+    <div class="result-section">
+      <div class="section-label">📊 Daily Plate Tracker</div>
+      <div class="section-content tracker-panel">
+        <p>Track your daily servings of vegetables and fruits to help manage your condition.</p>
+        <div class="tracker-grid">
+          <div>
+            <div class="section-label" style="margin-bottom:8px;">Vegetable Servings</div>
+            <div class="tracker-value" id="vegCount">0</div>
+            <div class="tracker-bar"><div class="tracker-bar-fill" id="vegProgress"></div></div>
+            <button class="tracker-button" onclick="adjustTracker('veg', 1)">+ Veg</button>
+            <button class="tracker-button" onclick="adjustTracker('veg', -1)">- Veg</button>
+          </div>
+          <div>
+            <div class="section-label" style="margin-bottom:8px;">Fruit Servings</div>
+            <div class="tracker-value" id="fruitCount">0</div>
+            <div class="tracker-bar"><div class="tracker-bar-fill" id="fruitProgress"></div></div>
+            <button class="tracker-button" onclick="adjustTracker('fruit', 1)">+ Fruit</button>
+            <button class="tracker-button" onclick="adjustTracker('fruit', -1)">- Fruit</button>
+          </div>
+        </div>
+        <p style="margin-top:12px;">Your goal: 3+ vegetable servings and 2+ fruit servings daily.</p>
+        <div id="trackerStatus" style="font-weight:700; margin-top:10px; color: var(--green-dark);"></div>
+        <div id="trackerUpdated" style="margin-top:8px; font-size:0.9rem; color:#555;"></div>
+        <button class="btn-view-diet" style="margin-top:12px;" onclick="resetTracker()">Reset Tracker</button>
+      </div>
+    </div>
+  `;
+
+  // Precautions
+  html += `
+    <div class="result-section">
+      <div class="section-label">⚠️ Precautions & Management</div>
+      <div class="section-content">${diseaseType.precautions}</div>
+    </div>
+  `;
+
+  // Treatment Methods
+  html += `
+    <div class="result-section">
+      <div class="section-label">💊 Treatment Methods</div>
+      <div class="technique-grid">
+        <div class="technique-box technique-ancient">
+          <h6>🌿 Ancient Techniques (Ayurveda & Herbal)</h6>
+          <ul>
+            ${diseaseType.ancient.split(',').map(t => `<li>${t.trim()}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="technique-box technique-modern">
+          <h6>⚕️ Modern Medical Approach</h6>
+          <ul>
+            ${diseaseType.modern.split(',').map(t => `<li>${t.trim()}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Diet Recommendation
+  const dietLink = {
+    diabetes: currentDisease === 'diabetes'
+      ? (selectedType === 'type1' ? '#sec-diabetes-type1' : '#sec-diabetes-type2')
+      : '',
+    bloodpressure: currentDisease === 'bloodpressure'
+      ? (selectedType === 'normal' ? '#sec-bp-normal'
+          : selectedType === 'elevated' ? '#sec-bp-elevated'
+          : selectedType === 'stage1' ? '#sec-bp-stage1'
+          : '#sec-bp-stage2')
+      : '',
+    fever: currentDisease === 'fever'
+      ? (selectedType === 'viral' ? '#sec-fever-viral'
+          : selectedType === 'bacterial' ? '#sec-fever-bacterial'
+          : '#sec-fever-dengue')
+      : '',
+    headache: currentDisease === 'headache'
+      ? (selectedType === 'tension' ? '#sec-headache-tension'
+          : selectedType === 'migraine' ? '#sec-headache-migraine'
+          : '#sec-headache-cluster')
+      : '',
+    cancer: currentDisease === 'cancer'
+      ? (selectedType === 'lowrisk' ? '#sec-cancer-lowrisk'
+          : selectedType === 'moderaterisk' ? '#sec-cancer-moderaterisk'
+          : '#sec-cancer-highrisk')
+      : ''
+  }[currentDisease];
+
+  html += `
+    <div class="result-section">
+      <div class="section-label">🍽️ Customized Diet Plan</div>
+      <div class="diet-recommendation">
+        <h5>View Your Disease-Specific Diet Plan</h5>
+        <p>Our experts have created detailed meal plans tailored to your identified ${typeData.name.toLowerCase()} condition. Click below to see recommended foods, meal schedules, and foods to avoid.</p>
+        <a href="/diet${dietLink}" class="btn-view-diet">📋 View Full Diet Plan for ${typeData.name}</a>
+      </div>
+    </div>
+  `;
+
+  html += `</div>`;
+  
+  document.getElementById('resultsContent').innerHTML = html;
+  initializeFoodTracker(currentDisease, currentSelectedType);
+}
+
+function getTrackerKey(disease, type) {
+  return `dietTracker_${disease}_${type}`;
+}
+
+function loadTracker(disease, type) {
+  const stored = localStorage.getItem(getTrackerKey(disease, type));
+  const today = new Date().toISOString().slice(0, 10);
+  if (!stored) return { veg: 0, fruit: 0, date: today, lastUpdated: null };
+  try {
+    const parsed = JSON.parse(stored);
+    if (parsed.date !== today) {
+      return { veg: 0, fruit: 0, date: today, lastUpdated: null };
+    }
+    return parsed;
+  } catch (e) {
+    return { veg: 0, fruit: 0, date: today, lastUpdated: null };
+  }
+}
+
+function saveTracker(disease, type, tracker) {
+  tracker.date = new Date().toISOString().slice(0, 10);
+  tracker.lastUpdated = new Date().toLocaleString();
+  localStorage.setItem(getTrackerKey(disease, type), JSON.stringify(tracker));
+}
+
+function initializeFoodTracker(disease, type) {
+  if (!disease || !type) return;
+  const tracker = loadTracker(disease, type);
+  document.getElementById('vegCount').textContent = tracker.veg;
+  document.getElementById('fruitCount').textContent = tracker.fruit;
+  document.getElementById('vegProgress').style.width = Math.min(100, (tracker.veg / 3) * 100) + '%';
+  document.getElementById('fruitProgress').style.width = Math.min(100, (tracker.fruit / 2) * 100) + '%';
+  updateTrackerStatus(tracker);
+  updateTrackerTimestamp(tracker.lastUpdated);
+}
+
+function updateTrackerStatus(tracker) {
+  const statusEl = document.getElementById('trackerStatus');
+  if (!statusEl) return;
+  const vegGoal = 3;
+  const fruitGoal = 2;
+  const vegMet = tracker.veg >= vegGoal;
+  const fruitMet = tracker.fruit >= fruitGoal;
+  if (vegMet && fruitMet) {
+    statusEl.textContent = 'Great job! You have met your daily veggie and fruit goals.';
+    statusEl.style.color = '#198754';
+  } else if (vegMet || fruitMet) {
+    statusEl.textContent = `Almost there! ${vegMet ? 'Fruit goal remaining.' : 'Vegetable goal remaining.'}`;
+    statusEl.style.color = '#d97706';
+  } else {
+    statusEl.textContent = 'Keep going! Add more veggies and fruits to reach today’s goal.';
+    statusEl.style.color = '#c21807';
+  }
+}
+
+function adjustTracker(field, delta) {
+  const disease = currentDisease;
+  const type = currentSelectedType;
+  if (!disease || !type) return;
+  const tracker = loadTracker(disease, type);
+  tracker[field] = Math.max(0, tracker[field] + delta);
+  saveTracker(disease, type, tracker);
+  document.getElementById(`${field}Count`).textContent = tracker[field];
+  document.getElementById(`${field}Progress`).style.width = field === 'veg'
+    ? Math.min(100, (tracker.veg / 3) * 100) + '%'
+    : Math.min(100, (tracker.fruit / 2) * 100) + '%';
+  updateTrackerStatus(tracker);
+  updateTrackerTimestamp(tracker.lastUpdated);
+}
+
+function updateTrackerTimestamp(timestamp) {
+  const updatedEl = document.getElementById('trackerUpdated');
+  if (!updatedEl) return;
+  updatedEl.textContent = timestamp ? `Last updated: ${timestamp}` : 'Not updated yet today.';
+}
+
+function resetTracker() {
+  const disease = currentDisease;
+  const type = currentSelectedType;
+  if (!disease || !type) return;
+  const tracker = { veg: 0, fruit: 0 };
+  saveTracker(disease, type, tracker);
+  document.getElementById('vegCount').textContent = tracker.veg;
+  document.getElementById('fruitCount').textContent = tracker.fruit;
+  document.getElementById('vegProgress').style.width = '0%';
+  document.getElementById('fruitProgress').style.width = '0%';
+  updateTrackerStatus(tracker);
+  updateTrackerTimestamp(tracker.lastUpdated);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Get disease from URL params or show selection
+  const params = new URLSearchParams(window.location.search);
+  const disease = params.get('disease');
+  
+  if (disease && quizData[disease]) {
+    startQuiz(disease);
+  } else {
+    // Show disease selection
+    let selectionHtml = `
+      <div class="quiz-card" style="text-align:center;margin-top:60px;">
+        <h2 style="color:var(--green-dark);margin-bottom:40px;">Choose a Disease to Take Assessment</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+    `;
+
+    Object.keys(quizData).forEach(disease => {
+      const icons = {
+        diabetes: '🩸',
+        bloodpressure: '❤️',
+        fever: '🤒',
+        headache: '🤕',
+        cancer: '🎗'
+      };
+      selectionHtml += `
+        <button onclick="startQuiz('${disease}')" style="padding:30px;border:2px solid var(--green-btn);border-radius:12px;background:white;cursor:pointer;font-size:1.1rem;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='var(--green-light)'" onmouseout="this.style.background='white'">
+          ${icons[disease]} <br> ${disease.charAt(0).toUpperCase() + disease.slice(1)}
+        </button>
+      `;
+    });
+
+    selectionHtml += `
+        </div>
+      </div>
+    `;
+
+    document.getElementById('selectionContent').innerHTML = selectionHtml;
+    document.getElementById('selectionContent').style.display = 'block';
+
+  }
+});
+</script>
+
+</body>
+</html>

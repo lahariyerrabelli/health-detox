@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>green plate nutrition - home</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+  :root {
+    --green-dark: #145a32;
+    --green-mid: #1e8449;
+    --green-light: #d5f5e3;
+    --accent: #f39c12;
+    --red: #c0392b;
+    --orange: #e67e22;
+    --blue: #1a5276;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(135deg, #eafaf1 0%, #f4f8f4 60%, #fdfefe 100%);
+    font-family: 'Segoe UI', sans-serif;
+    color: #2c3e50;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #145a32 0%, #1e8449 50%, #27ae60 100%);
+    color: white;
+    padding: 56px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px; position: relative; }
+  .hero p  { font-size: 1.05rem; opacity: 0.88; max-width: 600px; margin: 12px auto 0; position: relative; }
+
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; position: relative; }
+  .hero-badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: white;
+    text-decoration: none;
+  }
+  .hero-badge:hover { background: rgba(255,255,255,0.32); color: white; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: #fff8e1;
+    border-left: 4px solid var(--accent);
+    padding: 14px 20px;
+    font-size: 0.875rem;
+    color: #7d6608;
+  }
+
+  /* ── ACCORDION ── */
+  .accordion { gap: 16px; display: flex; flex-direction: column; }
+
+  .accordion-item {
+    border: none !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .accordion-button {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 20px 24px;
+    color: white !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .accordion-button::after { filter: brightness(10); }
+  .accordion-button:not(.collapsed)::after { filter: brightness(10); }
+
+  .acc-diabetes   .accordion-button { background: linear-gradient(90deg,#c0392b,#e74c3c); }
+  .acc-bp         .accordion-button { background: linear-gradient(90deg,#8e44ad,#9b59b6); }
+  .acc-fever      .accordion-button { background: linear-gradient(90deg,#d35400,#e67e22); }
+  .acc-headache   .accordion-button { background: linear-gradient(90deg,#2471a3,#2e86c1); }
+  .acc-cancer     .accordion-button { background: linear-gradient(90deg,#117a65,#1abc9c); }
+
+  .accordion-body { background: #fff; padding: 28px 28px 32px; }
+
+  /* ── SECTION HEADS ── */
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin: 28px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--green-light);
+  }
+  .sec-title:first-child { margin-top: 0; }
+  .sec-icon { font-size: 1.3rem; }
+
+  /* ── PILLS / TAGS ── */
+  .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+  }
+  .tag-eat  { background: #d5f5e3; color: #145a32; }
+  .tag-avoid{ background: #fadbd8; color: #922b21; }
+  .tag-caution { background: #fef9e7; color: #7d6608; border: 1px solid #f0d060; }
+
+  /* ── LEVEL BARS ── */
+  .level-bar-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .level-card {
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .level-card .lc-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .level-card .lc-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .level-card .lc-value { font-size: 0.95rem; font-weight: 600; margin-top: 2px; }
+  .lc-normal  { background: #eafaf1; } .lc-normal  .lc-dot { background: #27ae60; } .lc-normal  .lc-label { color: #1e8449; } .lc-normal  .lc-value { color: #145a32; }
+  .lc-warning { background: #fef9e7; } .lc-warning .lc-dot { background: #f0b30c; } .lc-warning .lc-label { color: #9a7d0a; } .lc-warning .lc-value { color: #7d6608; }
+  .lc-danger  { background: #fdedec; } .lc-danger  .lc-dot { background: #e74c3c; } .lc-danger  .lc-label { color: #b03a2e; } .lc-danger  .lc-value { color: #922b21; }
+  .lc-critical{ background: #f9ebea; border: 1px solid #f1948a; } .lc-critical .lc-dot { background: #c0392b; } .lc-critical .lc-label { color: #922b21; } .lc-critical .lc-value { color: #7b241c; }
+
+  /* ── MEAL TABLE ── */
+  .meal-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+  .meal-table th { background: var(--green-mid); color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+  .meal-table td { padding: 10px 14px; border-bottom: 1px solid #eef1f0; }
+  .meal-table tr:nth-child(even) td { background: #f7fdf9; }
+  .meal-table tr:last-child td { border-bottom: none; }
+  .meal-time { font-weight: 600; color: var(--green-dark); white-space: nowrap; }
+
+  /* ── TECHNIQUE CARDS ── */
+  .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tech-card {
+    border-radius: 12px; padding: 16px;
+    border: 1px solid #e8f8f5;
+  }
+  .tech-card.ancient { background: linear-gradient(135deg,#fef9e7,#fef5e4); border-color: #f0d060; }
+  .tech-card.modern  { background: linear-gradient(135deg,#eaf4fb,#d6eaf8); border-color: #aed6f1; }
+  .tech-card h5 { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .tech-card.ancient h5 { color: #7d6608; }
+  .tech-card.modern  h5 { color: #1a5276; }
+  .tech-card ul { margin: 0; padding-left: 18px; font-size: 0.88rem; line-height: 1.7; }
+  .tech-card.ancient ul { color: #6e5f1e; }
+  .tech-card.modern  ul { color: #154360; }
+
+  /* ── EMERGENCY BOX ── */
+  .emergency-box {
+    background: #f9ebea;
+    border: 1.5px solid #e74c3c;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 0.92rem;
+    color: #922b21;
+  }
+  .emergency-box strong { display: block; font-size: 1rem; margin-bottom: 8px; color: #c0392b; }
+  .emergency-box ul { margin: 0; padding-left: 18px; }
+  .emergency-box li { margin-bottom: 4px; }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    background: linear-gradient(135deg,#eafaf1,#d5f5e3);
+    border-left: 4px solid #27ae60;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: #145a32;
+    margin-top: 20px;
+  }
+  .tip-box strong { display: block; margin-bottom: 4px; }
+
+  .tracker-panel {
+    background: #f6ffed;
+    border: 1px solid #c7f0d9;
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 24px;
+  }
+  .tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .tracker-value { font-size: 2rem; font-weight: 700; color: var(--green-dark); margin: 10px 0; text-align: center; }
+  .tracker-bar { background: #e4f3dd; border-radius: 999px; height: 12px; margin: 8px 0 10px; overflow: hidden; }
+  .tracker-bar-fill { height: 100%; background: var(--green-mid); width: 0%; transition: width 0.25s ease; border-radius: 999px; }
+  .tracker-button { display: inline-block; width: calc(50% - 8px); margin: 4px 4px 0 0; padding: 10px 12px; border: none; border-radius: 8px; background: var(--green-mid); color: white; cursor: pointer; font-weight: 700; }
+  .tracker-button:hover { background: var(--green-dark); }
+  .tracker-status { margin-top: 10px; font-weight: 700; color: var(--green-dark); }
+  .tracker-timestamp { margin-top: 8px; font-size: 0.9rem; color: #555; }
+
+  /* ── PREVENTION ── */
+  .prev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+  .prev-item {
+    background: #f0faf5;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    display: flex; align-items: center; gap: 8px;
+    color: #1e5631;
+  }
+  .prev-item .pi-icon { font-size: 1.1rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .level-bar-wrap, .tech-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.7rem; }
+    .accordion-body { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top" style="box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/"><i class="bi bi-heart-pulse-fill"></i> green plate nutrition</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house-fill"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/quiz"><i class="bi bi-question-circle-fill"></i> Disease Quiz</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/diet"><i class="bi bi-journal-medical"></i> Diet Plans</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact"><i class="bi bi-envelope-fill"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🌿 Green Plate Nutrition</h1>
+  <p>Disease-wise diet plans, types, danger levels, ancient & modern cures — all in one place.</p>
+  <div class="hero-badges">
+    <a class="hero-badge" href="#sec-diabetes">🩸 Diabetes</a>
+    <a class="hero-badge" href="#sec-bp">❤️ Blood Pressure</a>
+    <a class="hero-badge" href="#sec-fever">🤒 Fever</a>
+    <a class="hero-badge" href="#sec-headache">🤕 Headache</a>
+    <a class="hero-badge" href="#sec-cancer">🎗 Cancer</a>
+  </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  ⚠️ <strong>Medical Disclaimer:</strong> This guide is for educational purposes only. Always consult a qualified doctor before making any health or dietary decisions.
+</div>
+
+<section class="container py-5">
+  <h2 class="section-title">Healthy Packs Weekly Plan</h2>
+  <div class="table-responsive">
+    <table class="meal-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Healthy Packs Meal Plan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="meal-time">Monday</td><td>One bowl of proteins like sprouts, fruits, and leafy vegetables.</td></tr>
+        <tr><td class="meal-time">Tuesday</td><td>Chickpea salad, cucumber, tomato, and fresh fruit.</td></tr>
+        <tr><td class="meal-time">Wednesday</td><td>Oat porridge with nuts, berries, and steamed greens.</td></tr>
+        <tr><td class="meal-time">Thursday</td><td>Grilled paneer or tofu with spinach and mixed vegetables.</td></tr>
+        <tr><td class="meal-time">Friday</td><td>Small serving of brown rice, dal, leafy vegetables, and salad.</td></tr>
+        <tr><td class="meal-time">Saturday</td><td>Spinach-fruit smoothie, a bowl of sprouts, and seeds.</td></tr>
+        <tr><td class="meal-time">Sunday</td><td>Vegetable soup, whole-grain toast, and leafy green salad.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="container py-4">
+  <h2 class="section-title">📊 Daily Veg & Fruit Tracker</h2>
+  <div class="tracker-panel">
+    <p>Track your daily vegetable and fruit servings to keep your diet plan on target. This saves locally in your browser.</p>
+    <div class="tracker-grid">
+      <div>
+        <div class="section-title" style="margin-bottom:12px;">Vegetable Servings</div>
+        <div class="tracker-value" id="dietVegCount">0</div>
+        <div class="tracker-bar"><div class="tracker-bar-fill" id="dietVegProgress"></div></div>
+        <button class="tracker-button" onclick="adjustDietTracker('veg', 1)">+ Veg</button>
+        <button class="tracker-button" onclick="adjustDietTracker('veg', -1)">- Veg</button>
+      </div>
+      <div>
+        <div class="section-title" style="margin-bottom:12px;">Fruit Servings</div>
+        <div class="tracker-value" id="dietFruitCount">0</div>
+        <div class="tracker-bar"><div class="tracker-bar-fill" id="dietFruitProgress"></div></div>
+        <button class="tracker-button" onclick="adjustDietTracker('fruit', 1)">+ Fruit</button>
+        <button class="tracker-button" onclick="adjustDietTracker('fruit', -1)">- Fruit</button>
+      </div>
+    </div>
+    <div class="tracker-status" id="dietTrackerStatus">Goal: 3+ veg, 2+ fruit servings daily.</div>
+    <div class="tracker-timestamp" id="dietTrackerUpdated">Last updated: not yet set</div>
+    <button class="tracker-button" style="margin-top:16px; width:auto;" onclick="resetDietTracker()">Reset Tracker</button>
+  </div>
+</section>
+
+<section class="container py-4">
+  <h2 class="section-title">📝 Bowl Review & Reminder</h2>
+  <div class="tracker-panel" style="background:#eef7ff; border-color:#c7dbf0;">
+    <p>Provide a short review of the bowl plan and condition so you can remember the recommended routine. This is helpful for Stage 1 diabetes or any bowl-based diet plan.</p>
+    <form action="/submit_bowl_review" method="post">
+      <div class="mb-3">
+        <label class="form-label" for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Your name" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="condition">Condition or Bowl Type</label>
+        <select class="form-select" id="condition" name="condition" required>
+          <option value="Diabetes Stage 1">Diabetes Stage 1</option>
+          <option value="Type 1 Diabetes">Type 1 Diabetes</option>
+          <option value="Type 2 Diabetes">Type 2 Diabetes</option>
+          <option value="Stage 1 Hypertension">Stage 1 Hypertension</option>
+          <option value="Elevated Blood Pressure">Elevated Blood Pressure</option>
+          <option value="Fever Recovery">Fever Recovery</option>
+          <option value="Headache Relief">Headache Relief</option>
+          <option value="Cancer Support">Cancer Support</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="bowl_note">Bowl Review Note</label>
+        <textarea class="form-control" id="bowl_note" name="bowl_note" rows="4" placeholder="Describe the bowl plan you followed and how it helped" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="rating">How useful was the bowl plan?</label>
+        <select class="form-select" id="rating" name="rating" required>
+          <option value="5">5 - Very useful</option>
+          <option value="4">4 - Useful</option>
+          <option value="3">3 - Somewhat useful</option>
+          <option value="2">2 - Not very useful</option>
+          <option value="1">1 - Not useful</option>
+        </select>
+      </div>
+      <button type="submit" class="tracker-button" style="width:auto;">Submit Bowl Review</button>
+    </form>
+  </div>
+</section>
+
+<div class="container my-4">
+<div class="accordion" id="healthAccordion">
+
+<!-- ═══════════════════════════════ DIABETES ═══════════════════════════════ -->
+<div class="accordion-item acc-diabetes" id="sec-diabetes">
+  <h2 class="accordion-header">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#colDiabetes">
+      🩸 Diabetes — Complete Guide
+    </button>
+  </h2>
+  <div id="colDiabetes" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <p>Diabetes is a chronic condition in which the body cannot properly regulate blood sugar (glucose). The pancreas either produces little or no insulin, or the body doesn't use insulin effectively.</p>
+
+      <div class="sec-title"><span class="sec-icon">📋</span> Types of Diabetes</div>
+      <div class="prev-grid">
+        <a class="prev-item" href="#sec-diabetes-type1"><span class="pi-icon">💉</span><div><strong>Type 1</strong> Autoimmune, needs insulin</div></a>
+        <a class="prev-item" href="#sec-diabetes-type2"><span class="pi-icon">🍽️</span><div><strong>Type 2</strong> Most common, lifestyle-linked</div></a>
+        <div class="prev-item"><span class="pi-icon">🤰</span><div><strong>Gestational</strong> During pregnancy</div></div>
+        <div class="prev-item"><span class="pi-icon">⚠️</span><div><strong>Prediabetes</strong> Early warning stage</div></div>
+      </div>
+      <p style="font-size:0.9rem;color:#555;margin-top:8px;">Click Type 1 or Type 2 above to jump directly to the matching diet plan and meal table below.</p>
+
+      <div class="sec-title"><span class="sec-icon">📊</span> Blood Sugar Danger Levels</div>
+      <div class="level-bar-wrap">
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Normal</div><div class="lc-value">70–99 mg/dL (Fasting)</div></div></div>
+        <div class="level-card lc-warning"><div class="lc-dot"></div><div><div class="lc-label">Prediabetes</div><div class="lc-value">100–125 mg/dL</div></div></div>
+        <div class="level-card lc-danger"><div class="lc-dot"></div><div><div class="lc-label">Diabetes</div><div class="lc-value">126+ mg/dL</div></div></div>
+        <div class="level-card lc-critical"><div class="lc-dot"></div><div><div class="lc-label">🚨 Crisis</div><div class="lc-value">Below 54 or Above 300 mg/dL</div></div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🍽️</span> Daily Diet Plan</div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>What to Eat</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm water, 5 soaked almonds, flax seeds</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Oats porridge, vegetable upma, or whole-grain toast with egg</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Apple, guava, or cucumber slices (low glycemic)</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Brown rice (small), dal, leafy vegetables, large salad</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Sprouts chaat, green tea (no sugar), roasted chana</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>2 chapati, vegetable curry, clear vegetable soup</td></tr>
+      </table>
+
+      <div class="sec-title"><span class="sec-icon">✅❌</span> Foods to Eat & Avoid</div>
+      <p style="font-size:0.85rem;color:#666;margin-bottom:8px;">Eat freely:</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Broccoli</span><span class="tag tag-eat">✅ Oats</span>
+        <span class="tag tag-eat">✅ Brown Rice</span><span class="tag tag-eat">✅ Lentils</span><span class="tag tag-eat">✅ Eggs</span>
+        <span class="tag tag-eat">✅ Bitter Gourd</span><span class="tag tag-eat">✅ Fenugreek</span><span class="tag tag-eat">✅ Almonds</span>
+      </div>
+      <div class="sec-title" style="margin-top:16px;"><span class="sec-icon">⛔</span> What Not to Eat</div>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid high-sugar, refined, and fried foods to keep blood sugar steady.</p>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Strictly avoid:</p>
+      <div class="tag-grid">
+        <span class="tag tag-avoid">❌ Sugar & Sweets</span><span class="tag tag-avoid">❌ Soft Drinks</span><span class="tag tag-avoid">❌ White Bread</span>
+        <span class="tag tag-avoid">❌ Deep Fried Foods</span><span class="tag tag-avoid">❌ White Rice (excess)</span><span class="tag tag-avoid">❌ Fruit Juices</span>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🏺⚗️</span> Ancient & Modern Treatment Techniques</div>
+      <div class="tech-grid">
+        <div class="tech-card ancient">
+          <h5>🏺 Ancient / Traditional</h5>
+          <ul>
+            <li>Bitter gourd (karela) juice</li>
+            <li>Fenugreek seed water</li>
+            <li>Turmeric milk (haldi doodh)</li>
+            <li>Ayurvedic herbs: Gurmar, Amla</li>
+            <li>Yoga: Pranayama, Kapalbhati</li>
+            <li>Intermittent fasting (ancient practice)</li>
+          </ul>
+        </div>
+        <div class="tech-card modern">
+          <h5>⚗️ Modern Medical</h5>
+          <ul>
+            <li>Metformin & other oral medications</li>
+            <li>Insulin therapy (Type 1 & advanced Type 2)</li>
+            <li>Continuous Glucose Monitoring (CGM)</li>
+            <li>Insulin pump technology</li>
+            <li>Bariatric surgery (severe obesity + T2D)</li>
+            <li>Stem cell research (emerging)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🛡️</span> Prevention</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🏃</span> Exercise 30 min daily</div>
+        <div class="prev-item"><span class="pi-icon">💧</span> Stay well hydrated</div>
+        <div class="prev-item"><span class="pi-icon">⚖️</span> Maintain healthy weight</div>
+        <div class="prev-item"><span class="pi-icon">🚭</span> Avoid smoking & alcohol</div>
+        <div class="prev-item"><span class="pi-icon">🩺</span> Regular blood sugar checks</div>
+        <div class="prev-item"><span class="pi-icon">😴</span> Sleep 7–8 hours/night</div>
+      </div>
+
+      <div class="emergency-box mt-3">
+        <strong>🚨 Emergency Warning Signs — Seek Help Immediately</strong>
+        <ul>
+          <li>Blood sugar below 54 mg/dL — severe hypoglycemia</li>
+          <li>Blood sugar above 300 mg/dL — hyperglycemic crisis</li>
+          <li>Difficulty breathing, fruity breath odor (DKA)</li>
+          <li>Loss of consciousness or extreme confusion</li>
+        </ul>
+      </div>
+      <div class="tip-box"><strong>💚 Daily Tip</strong> Check blood sugar at the same time daily, take medicines on time, and never skip meals.</div>
+
+      <div class="sec-title"><span class="sec-icon">🌱</span> Type-Specific Diabetes Diet Bowls</div>
+      <div id="sec-diabetes-type1" tabindex="-1"></div>
+      <h5 style="margin-top:16px;">Type 1 Diabetes Diet Bowl</h5>
+      <p>Insulin-dependent diabetes needs steady carbs, low glycemic load, and consistent meal timing.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Bitter gourd</span><span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Fenugreek</span>
+        <span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Paneer</span><span class="tag tag-eat">✅ Berries</span>
+      </div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>Type 1 Recommended Bowl</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm water, soaked almonds, chia seeds, small vegetable soup</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Oats with nuts, paneer bhurji, spinach, and half an apple</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Moong sprouts salad, cucumber, mint, and lemon</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Brown rice, dal, bottle gourd curry, mixed greens salad</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Mixed vegetable soup, roasted chana, cucumber slices</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>2 chapatis, fenugreek curry, sautéed broccoli, and berries</td></tr>
+      </table>
+
+      <div id="sec-diabetes-type2" tabindex="-1"></div>
+      <h5 style="margin-top:16px;">Type 2 Diabetes Diet Bowl</h5>
+      <p>Non-insulin diabetes focuses on fiber-rich vegetables, controlled carbs, and low-sugar fruits.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Kale</span><span class="tag tag-eat">✅ Broccoli</span><span class="tag tag-eat">✅ Zucchini</span>
+        <span class="tag tag-eat">✅ Berries</span><span class="tag tag-eat">✅ Pear</span><span class="tag tag-eat">✅ Whole grains</span>
+      </div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>Type 2 Recommended Bowl</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm lemon water, soaked flax seeds, and a small bowl of berries</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Quinoa bowl with kale, cucumber, tomato, and yogurt dressing</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Apple slices with peanut powder and a handful of walnuts</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Brown rice, mixed vegetable curry, spinach salad, and lentil soup</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Sprouts bowl, carrot sticks, and green tea</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>Whole grain chapati, zucchini stir-fry, mixed greens, and a small serving of berries</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ BLOOD PRESSURE ═══════════════════════════════ -->
+<div class="accordion-item acc-bp" id="sec-bp">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colBP">
+      ❤️ Blood Pressure (Hypertension) — Complete Guide
+    </button>
+  </h2>
+  <div id="colBP" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <p>Blood pressure is the force exerted by blood against artery walls. Uncontrolled high BP silently damages the heart, brain, kidneys, and blood vessels — often called the "silent killer."</p>
+
+      <div class="sec-title"><span class="sec-icon">📋</span> Types / Stages</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🟢</span><div><strong>Normal</strong> Below 120/80</div></div>
+        <div class="prev-item"><span class="pi-icon">🟡</span><div><strong>Elevated</strong> 120–129 / &lt;80</div></div>
+        <div class="prev-item"><span class="pi-icon">🟠</span><div><strong>Stage 1 HTN</strong> 130–139 / 80–89</div></div>
+        <div class="prev-item"><span class="pi-icon">🔴</span><div><strong>Stage 2 HTN</strong> 140/90 or above</div></div>
+        <div class="prev-item"><span class="pi-icon">🚨</span><div><strong>Hypertensive Crisis</strong> 180/120+</div></div>
+        <div class="prev-item"><span class="pi-icon">⬇️</span><div><strong>Low BP (Hypotension)</strong> Below 90/60</div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">📊</span> Danger Level Indicators</div>
+      <div class="level-bar-wrap">
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Normal</div><div class="lc-value">Below 120/80 mmHg</div></div></div>
+        <div class="level-card lc-warning"><div class="lc-dot"></div><div><div class="lc-label">Elevated</div><div class="lc-value">120–129 / Below 80</div></div></div>
+        <div class="level-card lc-danger"><div class="lc-dot"></div><div><div class="lc-label">Stage 2 HTN</div><div class="lc-value">140/90 mmHg +</div></div></div>
+        <div class="level-card lc-critical"><div class="lc-dot"></div><div><div class="lc-label">🚨 Crisis</div><div class="lc-value">Above 180/120 mmHg</div></div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🍽️</span> DASH Diet Plan (Recommended)</div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>What to Eat</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm lemon water, 2–3 soaked walnuts</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Oats porridge with berries, low-fat milk</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Banana or apple (potassium-rich)</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Brown rice, dal, spinach sabzi, cucumber salad (no added salt)</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Green tea, roasted chickpeas (unsalted)</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>Chapati, vegetable curry (low salt), clear soup</td></tr>
+        <tr><td class="meal-time">🌛 Before Bed</td><td>Warm low-fat milk</td></tr>
+      </table>
+
+      <div class="sec-title"><span class="sec-icon">✅❌</span> Foods to Eat & Avoid</div>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Banana</span><span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Beetroot</span>
+        <span class="tag tag-eat">✅ Oats</span><span class="tag tag-eat">✅ Watermelon</span><span class="tag tag-eat">✅ Garlic</span>
+        <span class="tag tag-eat">✅ Almonds</span><span class="tag tag-eat">✅ Walnuts</span><span class="tag tag-eat">✅ Lentils</span>
+      </div>
+      <div class="sec-title" style="margin-top:16px;"><span class="sec-icon">⛔</span> What Not to Eat</div>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid salty, processed, and fatty foods that raise blood pressure.</p>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Strictly avoid:</p>
+      <div class="tag-grid">
+        <span class="tag tag-avoid">❌ Excess Salt</span><span class="tag tag-avoid">❌ Pickles</span><span class="tag tag-avoid">❌ Chips & Namkeen</span>
+        <span class="tag tag-avoid">❌ Processed Foods</span><span class="tag tag-avoid">❌ Instant Noodles</span><span class="tag tag-avoid">❌ Alcohol</span>
+        <span class="tag tag-avoid">❌ Sugary Drinks</span>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🏺⚗️</span> Ancient & Modern Treatment</div>
+      <div class="tech-grid">
+        <div class="tech-card ancient">
+          <h5>🏺 Ancient / Traditional</h5>
+          <ul>
+            <li>Garlic clove on empty stomach</li>
+            <li>Arjuna tree bark decoction (Ayurveda)</li>
+            <li>Hibiscus tea (Roselle flower)</li>
+            <li>Sarpagandha herb (Rauwolfia)</li>
+            <li>Yoga: Shavasana, Anulom-Vilom</li>
+            <li>Low-salt diet (traditional wisdom)</li>
+          </ul>
+        </div>
+        <div class="tech-card modern">
+          <h5>⚗️ Modern Medical</h5>
+          <ul>
+            <li>ACE inhibitors (e.g., Lisinopril)</li>
+            <li>Beta-blockers & Calcium channel blockers</li>
+            <li>Diuretics (water pills)</li>
+            <li>24-hour ambulatory BP monitoring</li>
+            <li>Renal denervation (resistant HTN)</li>
+            <li>Lifestyle + medication combo therapy</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Blood Pressure Stage-Specific Diet Bowls</div>
+      <div class="prev-grid">
+        <a class="prev-item" href="#sec-bp-normal"><span class="pi-icon">🟢</span><div><strong>Normal</strong> Below 120/80</div></a>
+        <a class="prev-item" href="#sec-bp-elevated"><span class="pi-icon">🟡</span><div><strong>Elevated</strong> 120–129 / <80</div></a>
+        <a class="prev-item" href="#sec-bp-stage1"><span class="pi-icon">🟠</span><div><strong>Stage 1</strong> 130–139 / 80–89</div></a>
+        <a class="prev-item" href="#sec-bp-stage2"><span class="pi-icon">🔴</span><div><strong>Stage 2</strong> 140/90 or above</div></a>
+      </div>
+      <p style="font-size:0.9rem;color:#555;margin-top:8px;">Click a stage above to jump directly to the matching BP diet table below.</p>
+
+      <div class="sec-title"><span class="sec-icon">🛡️</span> Prevention</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🧂</span> Reduce salt to &lt;5g/day</div>
+        <div class="prev-item"><span class="pi-icon">🏃</span> 30 min brisk walk daily</div>
+        <div class="prev-item"><span class="pi-icon">⚖️</span> Maintain healthy BMI</div>
+        <div class="prev-item"><span class="pi-icon">🧘</span> Yoga & stress management</div>
+        <div class="prev-item"><span class="pi-icon">🚭</span> Quit smoking</div>
+        <div class="prev-item"><span class="pi-icon">😴</span> 7–8 hours quality sleep</div>
+      </div>
+
+      <div class="emergency-box mt-3">
+        <strong>🚨 Emergency Warning Signs</strong>
+        <ul>
+          <li>BP reading above 180/120 mmHg</li>
+          <li>Severe chest pain or pressure</li>
+          <li>Sudden weakness or numbness on one side</li>
+          <li>Severe headache + blurred vision</li>
+          <li>Difficulty breathing or loss of consciousness</li>
+        </ul>
+      </div>
+      <div class="tip-box"><strong>💚 Daily Tip</strong> Reduce salt, stay active, monitor BP at home daily, and never stop medication without your doctor's advice.</div>
+
+      <div class="sec-title"><span class="sec-icon">🌱</span> Blood Pressure Stage-Specific Diet Bowls</div>
+      <div id="sec-bp-normal"></div>
+      <h5 style="margin-top:16px;">Normal Blood Pressure Bowl</h5>
+      <p>Maintain health with balanced whole foods, plenty of greens, and moderate salt.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Leafy greens</span><span class="tag tag-eat">✅ Apples</span><span class="tag tag-eat">✅ Berries</span>
+        <span class="tag tag-eat">✅ Oats</span><span class="tag tag-eat">✅ Nuts</span><span class="tag tag-eat">✅ Cucumber</span>
+      </div>
+      <div id="sec-bp-elevated"></div>
+      <h5 style="margin-top:16px;">Elevated Blood Pressure Bowl</h5>
+      <p>Use potassium-rich vegetables and low-salt grains to keep pressure stable.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Celery</span><span class="tag tag-eat">✅ Broccoli</span>
+        <span class="tag tag-eat">✅ Oranges</span><span class="tag tag-eat">✅ Kiwi</span><span class="tag tag-eat">✅ Oats</span>
+      </div>
+      <div id="sec-bp-stage1"></div>
+      <h5 style="margin-top:16px;">Stage 1 Hypertension Bowl</h5>
+      <p>Focus on low-sodium, high-fiber foods and calming herbs.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Beetroot</span><span class="tag tag-eat">✅ Garlic</span><span class="tag tag-eat">✅ Sweet potato</span>
+        <span class="tag tag-eat">✅ Apples</span><span class="tag tag-eat">✅ Pomegranate</span><span class="tag tag-eat">✅ Lentils</span>
+      </div>
+      <div id="sec-bp-stage2"></div>
+      <h5 style="margin-top:16px;">Stage 2 Hypertension Bowl</h5>
+      <p>Use the DASH approach with vegetables, fruits, and minimal salt.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Swiss chard</span><span class="tag tag-eat">✅ Tomato</span><span class="tag tag-eat">✅ Cucumber</span>
+        <span class="tag tag-eat">✅ Berries</span><span class="tag tag-eat">✅ Guava</span><span class="tag tag-eat">✅ Brown rice</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FEVER ═══════════════════════════════ -->
+<div class="accordion-item acc-fever" id="sec-fever">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colFever">
+      🤒 Fever — Complete Guide
+    </button>
+  </h2>
+  <div id="colFever" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <p>Fever is a temporary rise in body temperature — usually above 37.2°C — triggered by infection, inflammation, or illness. It's the body's natural immune response to fight pathogens.</p>
+
+      <div class="sec-title"><span class="sec-icon">📋</span> Types of Fever</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🦠</span><div><strong>Viral Fever</strong> Most common; flu, cold</div></div>
+        <div class="prev-item"><span class="pi-icon">🦟</span><div><strong>Dengue Fever</strong> Aedes mosquito bite</div></div>
+        <div class="prev-item"><span class="pi-icon">🌊</span><div><strong>Typhoid</strong> Contaminated food/water</div></div>
+        <div class="prev-item"><span class="pi-icon">🦟</span><div><strong>Malaria</strong> Anopheles mosquito</div></div>
+        <div class="prev-item"><span class="pi-icon">🧫</span><div><strong>Bacterial Fever</strong> Pneumonia, UTI etc.</div></div>
+        <div class="prev-item"><span class="pi-icon">🌡️</span><div><strong>Heat Stroke</strong> Environmental heat</div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">📊</span> Temperature Danger Levels</div>
+      <div class="level-bar-wrap">
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Normal</div><div class="lc-value">36.1°C – 37.2°C</div></div></div>
+        <div class="level-card lc-warning"><div class="lc-dot"></div><div><div class="lc-label">Mild Fever</div><div class="lc-value">37.3°C – 38°C</div></div></div>
+        <div class="level-card lc-danger"><div class="lc-dot"></div><div><div class="lc-label">High Fever</div><div class="lc-value">Above 39°C</div></div></div>
+        <div class="level-card lc-critical"><div class="lc-dot"></div><div><div class="lc-label">🚨 Emergency</div><div class="lc-value">Above 40°C</div></div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🍽️</span> Fever Recovery Diet Plan</div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>What to Eat</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm water or coconut water (electrolytes)</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Idli with coconut chutney, or banana porridge</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Fresh orange juice, pomegranate, or apple</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Light rice congee (kanji), moong dal, boiled vegetables</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Warm vegetable or chicken soup, fresh fruit juice</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>Khichdi (rice + dal), curd rice, or vegetable soup</td></tr>
+        <tr><td class="meal-time">🌛 Before Bed</td><td>Warm turmeric milk (if tolerated)</td></tr>
+      </table>
+
+      <div class="sec-title"><span class="sec-icon">✅❌</span> Foods During Fever</div>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Coconut Water</span><span class="tag tag-eat">✅ Orange</span><span class="tag tag-eat">✅ Banana</span>
+        <span class="tag tag-eat">✅ Vegetable Soup</span><span class="tag tag-eat">✅ Khichdi</span><span class="tag tag-eat">✅ Pomegranate</span>
+        <span class="tag tag-eat">✅ Boiled Veggies</span><span class="tag tag-eat">✅ Plenty of Water</span>
+      </div>
+      <div class="sec-title" style="margin-top:16px;"><span class="sec-icon">⛔</span> What Not to Eat</div>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid heavy, spicy, and dehydrating foods until fever subsides.</p>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid during fever:</p>
+      <div class="tag-grid">
+        <span class="tag tag-avoid">❌ Deep Fried Foods</span><span class="tag tag-avoid">❌ Spicy Food</span><span class="tag tag-avoid">❌ Fast Food</span>
+        <span class="tag tag-avoid">❌ Soft Drinks</span><span class="tag tag-avoid">❌ Heavy Meals</span><span class="tag tag-avoid">❌ Dairy (if nauseated)</span>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🏺⚗️</span> Ancient & Modern Treatment</div>
+      <div class="tech-grid">
+        <div class="tech-card ancient">
+          <h5>🏺 Ancient / Traditional</h5>
+          <ul>
+            <li>Tulsi + ginger + honey tea</li>
+            <li>Wet cloth on forehead</li>
+            <li>Steam inhalation (eucalyptus)</li>
+            <li>Neem leaves (antimicrobial)</li>
+            <li>Giloy (Tinospora) kadha</li>
+            <li>Adequate rest in warm environment</li>
+          </ul>
+        </div>
+        <div class="tech-card modern">
+          <h5>⚗️ Modern Medical</h5>
+          <ul>
+            <li>Antipyretics: Paracetamol, Ibuprofen</li>
+            <li>Antibiotics (bacterial causes only)</li>
+            <li>Antivirals (influenza, dengue support)</li>
+            <li>IV fluids for severe dehydration</li>
+            <li>PCR & blood tests for diagnosis</li>
+            <li>Hospitalization for dangerous temps</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Fever Type-Specific Diet Bowls</div>
+      <div class="prev-grid">
+        <a class="prev-item" href="#sec-fever-viral"><span class="pi-icon">🦠</span><div><strong>Viral</strong> Most common</div></a>
+        <a class="prev-item" href="#sec-fever-bacterial"><span class="pi-icon">🧫</span><div><strong>Bacterial</strong> More severe</div></a>
+        <a class="prev-item" href="#sec-fever-dengue"><span class="pi-icon">🦟</span><div><strong>Dengue</strong> Platelet care</div></a>
+      </div>
+      <p style="font-size:0.9rem;color:#555;margin-top:8px;">Click a fever type above to jump directly to the appropriate recovery diet table below.</p>
+
+      <div class="sec-title"><span class="sec-icon">🛡️</span> Prevention</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🧼</span> Wash hands frequently</div>
+        <div class="prev-item"><span class="pi-icon">💧</span> Drink only clean water</div>
+        <div class="prev-item"><span class="pi-icon">🦟</span> Use mosquito nets/repellents</div>
+        <div class="prev-item"><span class="pi-icon">💉</span> Stay up to date on vaccines</div>
+        <div class="prev-item"><span class="pi-icon">🥗</span> Eat hygienic, fresh food</div>
+        <div class="prev-item"><span class="pi-icon">😷</span> Wear masks in sick environments</div>
+      </div>
+
+      <div class="emergency-box mt-3">
+        <strong>🚨 Emergency Warning Signs</strong>
+        <ul>
+          <li>Temperature above 40°C (104°F)</li>
+          <li>Seizures or convulsions</li>
+          <li>Severe dehydration or persistent vomiting</li>
+          <li>Rash with bleeding spots (dengue sign)</li>
+          <li>Confusion, difficulty breathing, or unconsciousness</li>
+        </ul>
+      </div>
+      <div class="tip-box"><strong>💚 Recovery Tip</strong> Drink fluids every 30 minutes, rest completely, monitor temperature every 4 hours, and see a doctor if fever persists beyond 3 days.</div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Cancer Risk-Specific Diet Bowls</div>
+      <div id="sec-cancer-lowrisk"></div>
+      <h5 style="margin-top:16px;">Low Risk Prevention Bowl</h5>
+      <p>Whole-food, antioxidant-rich bowls to help prevent cancer risk.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Broccoli</span><span class="tag tag-eat">✅ Tomatoes</span><span class="tag tag-eat">✅ Berries</span>
+        <span class="tag tag-eat">✅ Citrus</span><span class="tag tag-eat">✅ Whole grains</span><span class="tag tag-eat">✅ Kiwi</span>
+      </div>
+      <div id="sec-cancer-moderaterisk"></div>
+      <h5 style="margin-top:16px;">Moderate Risk Support Bowl</h5>
+      <p>Anti-inflammatory and immune-supporting foods for regular screening focus.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Kale</span><span class="tag tag-eat">✅ Bell pepper</span><span class="tag tag-eat">✅ Walnuts</span>
+        <span class="tag tag-eat">✅ Pomegranate</span><span class="tag tag-eat">✅ Apple</span><span class="tag tag-eat">✅ Green tea</span>
+      </div>
+      <div id="sec-cancer-highrisk"></div>
+      <h5 style="margin-top:16px;">High Risk Care Bowl</h5>
+      <p>Nutrient-dense bowls that support recovery, immunity, and medical treatment.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Cabbage</span><span class="tag tag-eat">✅ Berries</span>
+        <span class="tag tag-eat">✅ Avocado</span><span class="tag tag-eat">✅ Pomegranate</span><span class="tag tag-eat">✅ Carrots</span>
+      </div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Fever Type-Specific Diet Bowls</div>
+      <div id="sec-fever-viral"></div>
+      <h5 style="margin-top:16px;">Viral Fever Bowl</h5>
+      <p>Hydrating, light and vitamin-rich bowls that help immune recovery.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Coconut water</span><span class="tag tag-eat">✅ Orange</span><span class="tag tag-eat">✅ Papaya</span>
+        <span class="tag tag-eat">✅ Carrot</span><span class="tag tag-eat">✅ Bottle gourd</span><span class="tag tag-eat">✅ Spinach</span>
+      </div>
+      <div id="sec-fever-bacterial"></div>
+      <h5 style="margin-top:16px;">Bacterial Fever Bowl</h5>
+      <p>Nutritious and gentle foods with immune-supporting vegetables.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Celery</span><span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Spinach</span>
+        <span class="tag tag-eat">✅ Lemon</span><span class="tag tag-eat">✅ Berries</span><span class="tag tag-eat">✅ Papaya</span>
+      </div>
+      <div id="sec-fever-dengue"></div>
+      <h5 style="margin-top:16px;">Dengue Fever Bowl</h5>
+      <p>Hydration and easy digestion are key, plus platelet-supportive foods.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Coconut water</span><span class="tag tag-eat">✅ Pomegranate</span><span class="tag tag-eat">✅ Papaya leaf juice</span>
+        <span class="tag tag-eat">✅ Beetroot</span><span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Tomato</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ HEADACHE ═══════════════════════════════ -->
+<div class="accordion-item acc-headache" id="sec-headache">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colHeadache">
+      🤕 Headache — Complete Guide
+    </button>
+  </h2>
+  <div id="colHeadache" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <p>A headache is pain or discomfort in the head, scalp, or neck. It can range from a minor inconvenience to a sign of serious neurological conditions. Understanding the type helps with proper treatment.</p>
+
+      <div class="sec-title"><span class="sec-icon">📋</span> Types of Headaches</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">😟</span><div><strong>Tension</strong> Stress & fatigue related</div></div>
+        <div class="prev-item"><span class="pi-icon">⚡</span><div><strong>Migraine</strong> Throbbing, nausea, aura</div></div>
+        <div class="prev-item"><span class="pi-icon">👃</span><div><strong>Sinus</strong> Congestion & infection</div></div>
+        <div class="prev-item"><span class="pi-icon">💧</span><div><strong>Dehydration</strong> Fluid deficiency</div></div>
+        <div class="prev-item"><span class="pi-icon">🔥</span><div><strong>Cluster</strong> Severe, one-sided cycles</div></div>
+        <div class="prev-item"><span class="pi-icon">☕</span><div><strong>Caffeine</strong> Caffeine withdrawal</div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">📊</span> Severity / Danger Levels</div>
+      <div class="level-bar-wrap">
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Mild</div><div class="lc-value">Manageable, no activity loss</div></div></div>
+        <div class="level-card lc-warning"><div class="lc-dot"></div><div><div class="lc-label">Moderate</div><div class="lc-value">Interferes with daily tasks</div></div></div>
+        <div class="level-card lc-danger"><div class="lc-dot"></div><div><div class="lc-label">Severe</div><div class="lc-value">Intense; needs medical eval</div></div></div>
+        <div class="level-card lc-critical"><div class="lc-dot"></div><div><div class="lc-label">🚨 Emergency</div><div class="lc-value">"Worst ever" sudden headache</div></div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🍽️</span> Anti-Headache Diet Plan</div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>What to Eat</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>2 glasses of warm water + fresh lemon</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Oats with banana and a handful of almonds</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Apple, cucumber slices, or watermelon</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Chapati, dal, vegetable sabzi, large salad</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Buttermilk (chaas), roasted pumpkin seeds</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>Whole wheat chapati, light vegetable soup</td></tr>
+      </table>
+
+      <div class="sec-title"><span class="sec-icon">✅❌</span> Foods to Eat & Avoid</div>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Watermelon</span><span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Banana</span>
+        <span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Almonds</span><span class="tag tag-eat">✅ Avocado</span>
+        <span class="tag tag-eat">✅ Whole Grains</span><span class="tag tag-eat">✅ Ginger Tea</span>
+      </div>
+      <div class="sec-title" style="margin-top:16px;"><span class="sec-icon">⛔</span> What Not to Eat</div>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid trigger foods that commonly worsen headache and migraine symptoms.</p>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid these triggers:</p>
+      <div class="tag-grid">
+        <span class="tag tag-avoid">❌ Excess Caffeine</span><span class="tag tag-avoid">❌ Alcohol</span><span class="tag tag-avoid">❌ Processed Foods</span>
+        <span class="tag tag-avoid">❌ Aged Cheese</span><span class="tag tag-avoid">❌ MSG (Ajinomoto)</span><span class="tag tag-avoid">❌ Skipping Meals</span>
+        <span class="tag tag-avoid">❌ Artificial Sweeteners</span>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🏺⚗️</span> Ancient & Modern Treatment</div>
+      <div class="tech-grid">
+        <div class="tech-card ancient">
+          <h5>🏺 Ancient / Traditional</h5>
+          <ul>
+            <li>Ginger + honey tea</li>
+            <li>Peppermint oil on temples</li>
+            <li>Lavender oil aromatherapy</li>
+            <li>Triphala (Ayurvedic herb)</li>
+            <li>Yoga: Balasana, Uttanasana</li>
+            <li>Steam inhalation (sinus headache)</li>
+          </ul>
+        </div>
+        <div class="tech-card modern">
+          <h5>⚗️ Modern Medical</h5>
+          <ul>
+            <li>Analgesics: Paracetamol, Aspirin</li>
+            <li>Triptans (migraine-specific)</li>
+            <li>CGRP antagonists (new migraine drugs)</li>
+            <li>Preventive: Beta-blockers, Topiramate</li>
+            <li>Botox injections (chronic migraine)</li>
+            <li>MRI/CT scan for recurrent headaches</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Headache Type-Specific Diet Bowls</div>
+      <div class="prev-grid">
+        <a class="prev-item" href="#sec-headache-tension"><span class="pi-icon">😟</span><div><strong>Tension</strong> Stress-related</div></a>
+        <a class="prev-item" href="#sec-headache-migraine"><span class="pi-icon">⚡</span><div><strong>Migraine</strong> Throbbing</div></a>
+        <a class="prev-item" href="#sec-headache-cluster"><span class="pi-icon">🔥</span><div><strong>Cluster</strong> Severe cycles</div></a>
+      </div>
+      <p style="font-size:0.9rem;color:#555;margin-top:8px;">Click a headache type above to jump directly to the matching diet bowl table below.</p>
+
+      <div class="sec-title"><span class="sec-icon">🛡️</span> Prevention</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">💧</span> Drink 8–10 glasses of water</div>
+        <div class="prev-item"><span class="pi-icon">😴</span> Sleep 7–9 hours consistently</div>
+        <div class="prev-item"><span class="pi-icon">🍽️</span> Never skip meals</div>
+        <div class="prev-item"><span class="pi-icon">🧘</span> Yoga & meditation daily</div>
+        <div class="prev-item"><span class="pi-icon">💻</span> 20-20-20 rule for screens</div>
+        <div class="prev-item"><span class="pi-icon">🪑</span> Maintain good posture</div>
+      </div>
+
+      <div class="emergency-box mt-3">
+        <strong>🚨 Emergency Warning Signs (Thunderclap / Red Flag)</strong>
+        <ul>
+          <li>Sudden "worst headache of your life" — could be brain bleed</li>
+          <li>Headache with high fever + stiff neck (meningitis)</li>
+          <li>Vision loss, weakness, or difficulty speaking</li>
+          <li>Headache after head injury</li>
+          <li>Seizures or loss of consciousness</li>
+        </ul>
+      </div>
+      <div class="tip-box"><strong>💚 Daily Tip</strong> Keep a headache diary to track triggers. Hydration and consistent sleep schedule prevent up to 60% of tension headaches.</div>
+
+      <div class="sec-title"><span class="sec-icon">🌱</span> Headache Type-Specific Diet Bowls</div>
+      <div id="sec-headache-tension"></div>
+      <h5 style="margin-top:16px;">Tension Headache Bowl</h5>
+      <p>Focus on hydration, magnesium-rich foods, and calming vegetables.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Spinach</span><span class="tag tag-eat">✅ Broccoli</span><span class="tag tag-eat">✅ Sweet potato</span>
+        <span class="tag tag-eat">✅ Banana</span><span class="tag tag-eat">✅ Watermelon</span><span class="tag tag-eat">✅ Almonds</span>
+      </div>
+      <div id="sec-headache-migraine"></div>
+      <h5 style="margin-top:16px;">Migraine Bowl</h5>
+      <p>Low-trigger, nutrient-rich foods, avoid aged and processed items.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Berries</span><span class="tag tag-eat">✅ Pear</span>
+        <span class="tag tag-eat">✅ Ginger</span><span class="tag tag-eat">✅ Oats</span><span class="tag tag-eat">✅ Spinach</span>
+      </div>
+      <div id="sec-headache-cluster"></div>
+      <h5 style="margin-top:16px;">Cluster Headache Bowl</h5>
+      <p>Meals that support vascular health with fresh greens and low histamine options.</p>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Kale</span><span class="tag tag-eat">✅ Avocado</span><span class="tag tag-eat">✅ Pear</span>
+        <span class="tag tag-eat">✅ Apple</span><span class="tag tag-eat">✅ Cucumber</span><span class="tag tag-eat">✅ Berries</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ CANCER ═══════════════════════════════ -->
+<div class="accordion-item acc-cancer" id="sec-cancer">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colCancer">
+      🎗 Cancer — Complete Guide
+    </button>
+  </h2>
+  <div id="colCancer" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <p>Cancer occurs when abnormal cells divide and grow uncontrollably, potentially invading surrounding tissue and spreading to other organs. Early detection dramatically improves survival rates.</p>
+
+      <div class="sec-title"><span class="sec-icon">📋</span> Major Types of Cancer</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🎗</span><div><strong>Breast</strong> Affects breast tissue</div></div>
+        <div class="prev-item"><span class="pi-icon">🫁</span><div><strong>Lung</strong> Mostly smoking-related</div></div>
+        <div class="prev-item"><span class="pi-icon">🩺</span><div><strong>Prostate</strong> Common in men 50+</div></div>
+        <div class="prev-item"><span class="pi-icon">🫀</span><div><strong>Colon/Rectal</strong> Large intestine</div></div>
+        <div class="prev-item"><span class="pi-icon">☀️</span><div><strong>Skin</strong> UV-radiation linked</div></div>
+        <div class="prev-item"><span class="pi-icon">🩸</span><div><strong>Leukemia</strong> Blood & bone marrow</div></div>
+        <div class="prev-item"><span class="pi-icon">👄</span><div><strong>Oral</strong> Mouth & throat</div></div>
+        <div class="prev-item"><span class="pi-icon">🧬</span><div><strong>Cervical</strong> HPV-associated</div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">📊</span> Stages & Danger Levels</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;">
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Stage 0</div><div class="lc-value">Pre-cancer, not spread</div></div></div>
+        <div class="level-card lc-normal"><div class="lc-dot"></div><div><div class="lc-label">Stage I</div><div class="lc-value">Small, localized</div></div></div>
+        <div class="level-card lc-warning"><div class="lc-dot"></div><div><div class="lc-label">Stage II</div><div class="lc-value">Larger, limited spread</div></div></div>
+        <div class="level-card lc-danger"><div class="lc-dot"></div><div><div class="lc-label">Stage III</div><div class="lc-value">Lymph node spread</div></div></div>
+        <div class="level-card lc-critical"><div class="lc-dot"></div><div><div class="lc-label">Stage IV</div><div class="lc-value">Distant organ spread</div></div></div>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🍽️</span> Anti-Cancer Diet Plan</div>
+      <table class="meal-table">
+        <tr><th>Time</th><th>What to Eat</th></tr>
+        <tr><td class="meal-time">🌅 Early Morning</td><td>Warm water + soaked almonds + turmeric pinch</td></tr>
+        <tr><td class="meal-time">🌄 Breakfast</td><td>Oats with berries, flax seeds, and low-fat milk</td></tr>
+        <tr><td class="meal-time">🕙 Mid-Morning</td><td>Fresh vegetable juice (carrot + beetroot + ginger)</td></tr>
+        <tr><td class="meal-time">☀️ Lunch</td><td>Brown rice, chana dal, broccoli, large green salad</td></tr>
+        <tr><td class="meal-time">🌆 Evening</td><td>Green tea (antioxidants), walnuts, pumpkin seeds</td></tr>
+        <tr><td class="meal-time">🌙 Dinner</td><td>Vegetable soup, chapati, steamed greens, salad</td></tr>
+        <tr><td class="meal-time">🌛 Before Bed</td><td>Warm turmeric milk (if advised by oncologist)</td></tr>
+      </table>
+
+      <div class="sec-title"><span class="sec-icon">✅❌</span> Cancer-Fighting Foods & What to Avoid</div>
+      <div class="tag-grid">
+        <span class="tag tag-eat">✅ Broccoli</span><span class="tag tag-eat">✅ Carrots</span><span class="tag tag-eat">✅ Tomatoes</span>
+        <span class="tag tag-eat">✅ Berries</span><span class="tag tag-eat">✅ Garlic</span><span class="tag tag-eat">✅ Turmeric</span>
+        <span class="tag tag-eat">✅ Leafy Greens</span><span class="tag tag-eat">✅ Lentils</span><span class="tag tag-eat">✅ Green Tea</span>
+        <span class="tag tag-eat">✅ Citrus Fruits</span>
+      </div>
+      <div class="sec-title" style="margin-top:16px;"><span class="sec-icon">⛔</span> What Not to Eat</div>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid processed, charred, and sugary foods that can increase cancer risk.</p>
+      <p style="font-size:0.85rem;color:#666;margin:12px 0 8px;">Avoid or minimize:</p>
+      <div class="tag-grid">
+        <span class="tag tag-avoid">❌ Tobacco / Smoking</span><span class="tag tag-avoid">❌ Processed Meats</span><span class="tag tag-avoid">❌ Excess Alcohol</span>
+        <span class="tag tag-avoid">❌ Sugary Drinks</span><span class="tag tag-avoid">❌ Deep-Fried Foods</span><span class="tag tag-avoid">❌ Ultra-Processed Foods</span>
+      </div>
+
+      <div class="sec-title"><span class="sec-icon">🏺⚗️</span> Ancient & Modern Treatment Techniques</div>
+      <div class="tech-grid">
+        <div class="tech-card ancient">
+          <h5>🏺 Ancient / Traditional</h5>
+          <ul>
+            <li>Turmeric (Curcumin) — anti-tumor properties</li>
+            <li>Ashwagandha for immune support</li>
+            <li>Neem (antimicrobial, immune boost)</li>
+            <li>Amla (Vitamin C, antioxidant)</li>
+            <li>Yoga & meditation (supports recovery)</li>
+            <li>Fasting practices (Ayurvedic cleanse)</li>
+          </ul>
+        </div>
+        <div class="tech-card modern">
+          <h5>⚗️ Modern Medical</h5>
+          <ul>
+            <li>Surgery (tumor removal)</li>
+            <li>Chemotherapy (cell-killing drugs)</li>
+            <li>Radiation therapy (targeted radiation)</li>
+            <li>Immunotherapy (boosts immune attack)</li>
+            <li>Targeted therapy (gene-specific drugs)</li>
+            <li>CAR-T cell therapy (blood cancers)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sec-title"><span class="sec-icon">🌱</span> Cancer Risk-Specific Diet Bowls</div>
+      <div class="prev-grid">
+        <a class="prev-item" href="#sec-cancer-lowrisk"><span class="pi-icon">🟢</span><div><strong>Low Risk</strong> Prevention focus</div></a>
+        <a class="prev-item" href="#sec-cancer-moderaterisk"><span class="pi-icon">🟡</span><div><strong>Moderate Risk</strong> Screening support</div></a>
+        <a class="prev-item" href="#sec-cancer-highrisk"><span class="pi-icon">🔴</span><div><strong>High Risk</strong> Care support</div></a>
+      </div>
+      <p style="font-size:0.9rem;color:#555;margin-top:8px;">Click a cancer risk level above to jump directly to the appropriate diet bowl section below.</p>
+
+      <div class="sec-title"><span class="sec-icon">🛡️</span> Prevention (Up to 50% of Cancer is Preventable)</div>
+      <div class="prev-grid">
+        <div class="prev-item"><span class="pi-icon">🚭</span> Quit tobacco completely</div>
+        <div class="prev-item"><span class="pi-icon">🏃</span> Exercise 150 min/week</div>
+        <div class="prev-item"><span class="pi-icon">⚖️</span> Maintain healthy weight</div>
+        <div class="prev-item"><span class="pi-icon">🩺</span> Regular cancer screenings</div>
+        <div class="prev-item"><span class="pi-icon">☀️</span> Sunscreen SPF 30+ daily</div>
+        <div class="prev-item"><span class="pi-icon">💉</span> HPV & Hepatitis B vaccine</div>
+        <div class="prev-item"><span class="pi-icon">🍷</span> Limit alcohol intake</div>
+        <div class="prev-item"><span class="pi-icon">🥗</span> Plant-rich balanced diet</div>
+      </div>
+
+      <div class="emergency-box mt-3">
+        <strong>🚨 Warning Signs — Never Ignore These</strong>
+        <ul>
+          <li>Unexplained weight loss of 5+ kg in weeks</li>
+          <li>Lumps or swelling anywhere in the body</li>
+          <li>Persistent cough or blood in phlegm</li>
+          <li>Unusual or unexplained bleeding</li>
+          <li>Severe difficulty swallowing or breathing</li>
+          <li>Changes in moles or skin appearance</li>
+        </ul>
+      </div>
+      <div class="tip-box"><strong>💚 Key Message</strong> Cancer caught at Stage 0 or Stage I has a survival rate of over 90% for most types. Annual screenings save lives — don't postpone.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end accordion -->
+
+<!-- FOOTER -->
+<div class="text-center mt-5 mb-4" style="color:#6c757d;font-size:0.85rem;">
+  <p>🌿 <strong>Fresh Health Hub</strong> — For educational purposes only. Always consult a qualified healthcare provider.</p>
+  <p style="margin-top:4px;">Built with ❤️ for better health awareness</p>
+</div>
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<footer style="background:#145a32;color:white;padding:20px 0;margin-top:40px;">
+  <div class="container text-center">
+    <p style="margin:0;font-size:0.88rem;opacity:0.85;">© 2026 <strong>Fresh Health Hub</strong> — For educational purposes only. Always consult a qualified doctor.</p>
+    <div style="margin-top:10px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
+      <a href="/" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;">🏠 Home</a>
+    
+      <a href="/contact" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;">✉️ Contact</a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Map of section IDs to their collapse element IDs, including subtype anchors.
+  const sectionMap = {
+    'sec-diabetes': 'colDiabetes',
+    'sec-diabetes-type1': 'colDiabetes',
+    'sec-diabetes-type2': 'colDiabetes',
+    'sec-bp': 'colBP',
+    'sec-bp-normal': 'colBP',
+    'sec-bp-elevated': 'colBP',
+    'sec-bp-stage1': 'colBP',
+    'sec-bp-stage2': 'colBP',
+    'sec-fever': 'colFever',
+    'sec-fever-viral': 'colFever',
+    'sec-fever-bacterial': 'colFever',
+    'sec-fever-dengue': 'colFever',
+    'sec-headache': 'colHeadache',
+    'sec-headache-tension': 'colHeadache',
+    'sec-headache-migraine': 'colHeadache',
+    'sec-headache-cluster': 'colHeadache',
+    'sec-cancer': 'colCancer',
+    'sec-cancer-lowrisk': 'colCancer',
+    'sec-cancer-moderaterisk': 'colCancer',
+    'sec-cancer-highrisk': 'colCancer'
+  };
+  
+  // Function to expand correct section
+  function expandSection() {
+    const hash = window.location.hash.slice(1); // Remove '#' from hash
+    
+    if (hash && sectionMap[hash]) {
+      const collapseElement = document.getElementById(sectionMap[hash]);
+      const targetElement = document.getElementById(hash);
+      const scrollTarget = () => {
+        if (targetElement) {
+          setTimeout(() => targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+        }
+      };
+      if (collapseElement) {
+        const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || new bootstrap.Collapse(collapseElement, {toggle: false});
+        if (!collapseElement.classList.contains('show')) {
+          collapseElement.addEventListener('shown.bs.collapse', scrollTarget, { once: true });
+          bsCollapse.show();
+        } else {
+          scrollTarget();
+        }
+      } else {
+        scrollTarget();
+      }
+    } else {
+      // Default: expand diabetes if no hash
+      const defaultCollapse = document.getElementById('colDiabetes');
+      if (defaultCollapse && !defaultCollapse.classList.contains('show')) {
+        new bootstrap.Collapse(defaultCollapse, { toggle: true });
+      }
+    }
+  }
+  
+  // Expand section on page load
+  expandSection();
+  
+  // Handle hash change (when user clicks back/forward or manually changes hash)
+  window.addEventListener('hashchange', expandSection);
+  initializeDietTracker();
+});
+
+function getDietTracker() {
+  const stored = localStorage.getItem('dietPageTracker');
+  if (!stored) return { veg: 0, fruit: 0, lastUpdated: 'Not yet updated', date: new Date().toISOString().slice(0,10) };
+  try {
+    const tracker = JSON.parse(stored);
+    const today = new Date().toISOString().slice(0,10);
+    if (tracker.date !== today) {
+      return { veg: 0, fruit: 0, lastUpdated: 'Not yet updated', date: today };
+    }
+    return tracker;
+  } catch (e) {
+    return { veg: 0, fruit: 0, lastUpdated: 'Not yet updated', date: new Date().toISOString().slice(0,10) };
+  }
+}
+
+function saveDietTracker(tracker) {
+  tracker.date = new Date().toISOString().slice(0,10);
+  tracker.lastUpdated = new Date().toLocaleString();
+  localStorage.setItem('dietPageTracker', JSON.stringify(tracker));
+}
+
+function updateDietTrackerUI(tracker) {
+  document.getElementById('dietVegCount').textContent = tracker.veg;
+  document.getElementById('dietFruitCount').textContent = tracker.fruit;
+  document.getElementById('dietVegProgress').style.width = Math.min(100, (tracker.veg / 3) * 100) + '%';
+  document.getElementById('dietFruitProgress').style.width = Math.min(100, (tracker.fruit / 2) * 100) + '%';
+  const statusEl = document.getElementById('dietTrackerStatus');
+  const vegGoal = tracker.veg >= 3;
+  const fruitGoal = tracker.fruit >= 2;
+  statusEl.textContent = vegGoal && fruitGoal
+    ? 'Great job! You have met today’s veg and fruit goals.'
+    : `Goal: ${vegGoal ? 'Veg done' : '3+ veg'} | ${fruitGoal ? 'Fruit done' : '2+ fruit'}`;
+  updateDietTrackerTimestamp(tracker.lastUpdated);
+}
+
+function updateDietTrackerTimestamp(timestamp) {
+  document.getElementById('dietTrackerUpdated').textContent = `Last updated: ${timestamp}`;
+}
+
+function initializeDietTracker() {
+  const tracker = getDietTracker();
+  updateDietTrackerUI(tracker);
+}
+
+function adjustDietTracker(field, delta) {
+  const tracker = getDietTracker();
+  tracker[field] = Math.max(0, tracker[field] + delta);
+  saveDietTracker(tracker);
+  updateDietTrackerUI(tracker);
+}
+
+function resetDietTracker() {
+  const tracker = { veg: 0, fruit: 0, lastUpdated: new Date().toLocaleString(), date: new Date().toISOString().slice(0,10) };
+  saveDietTracker(tracker);
+  updateDietTrackerUI(tracker);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+.navbar {
+    background-color: darkgreen !important;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: yellow !important;
+}
+
+.navbar-toggler {
+    border: 2px solid white;
+}

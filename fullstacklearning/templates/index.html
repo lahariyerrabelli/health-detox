@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Plate Nutrition – Home</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --green-dark: #145a32;
+  --green-mid:  #1e8449;
+  --green-btn:  #27ae60;
+  --green-light:#eafaf1;
+  --accent:     #f39c12;
+}
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #f4f8f4; color: #2c3e50; margin: 0; }
+
+/* NAVBAR */
+.navbar { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.navbar-brand { font-weight: 800; font-size: 1.25rem; }
+.nav-link { font-weight: 500; }
+
+/* CAROUSEL */
+.carousel-item img { object-fit: cover; height: 500px; width: 100%; filter: brightness(0.6); }
+.carousel-caption { bottom: 60px; }
+.carousel-caption h2 { font-size: 2.2rem; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.carousel-caption p  { font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+.carousel-caption .btn { font-weight: 600; padding: 10px 28px; border-radius: 50px; }
+
+/* SEARCH */
+.search-section { background: white; padding: 32px 0; border-bottom: 1px solid #e0ece4; }
+.section-title  { font-size: 1.7rem; font-weight: 800; color: var(--green-dark); }
+.section-sub    { color: #6c757d; font-size: 0.95rem; margin-top: 6px; }
+.title-line     { width: 50px; height: 4px; background: var(--green-btn); border-radius: 4px; margin: 10px auto 0; }
+.search-wrap    { max-width: 600px; margin: 0 auto; box-shadow: 0 2px 12px rgba(0,0,0,0.1); border-radius: 50px; overflow: hidden; display: flex; }
+.search-wrap input  { flex:1; border: none; padding: 14px 20px; font-size: 1rem; outline: none; }
+.search-wrap button { padding: 0 28px; font-weight: 600; border: none; background: var(--green-btn); color: white; cursor: pointer; font-size: 0.95rem; }
+.search-wrap button:hover { background: var(--green-mid); }
+
+#searchResults { display: none; max-width: 600px; margin: 14px auto 0; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12); overflow: hidden; }
+.sr-item { padding: 12px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #2c3e50; transition: background .15s; }
+.sr-item:hover { background: var(--green-light); }
+.sr-item:last-child { border-bottom: none; }
+
+/* STATS */
+.stats-strip { background: var(--green-dark); color: white; padding: 20px 0; }
+.stat-item   { text-align: center; }
+.stat-num    { font-size: 1.8rem; font-weight: 800; color: #a9dfbf; }
+.stat-label  { font-size: 0.82rem; opacity: 0.8; }
+
+/* DISEASE CARDS */
+.disease-card { border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.09); transition: transform .22s, box-shadow .22s; height: 100%; }
+.disease-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.14); }
+.disease-card .card-header { padding: 20px; color: white; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; border: none; }
+.disease-card .card-header i { font-size: 1.5rem; }
+.disease-card .card-body { background: white; padding: 18px 20px 20px; }
+.disease-card .card-body p { font-size: 0.88rem; color: #555; line-height: 1.6; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 50px; font-weight: 600; background: var(--green-light); color: var(--green-dark); }
+.btn-card { display: block; text-align: center; margin-top: 14px; padding: 9px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; text-decoration: none; color: white; transition: opacity .2s; }
+.btn-card:hover { opacity: 0.85; color: white; }
+
+.hd-diabetes { background: linear-gradient(135deg,#c0392b,#e74c3c); }
+.hd-bp       { background: linear-gradient(135deg,#8e44ad,#9b59b6); }
+.hd-fever    { background: linear-gradient(135deg,#d35400,#e67e22); }
+.hd-headache { background: linear-gradient(135deg,#2471a3,#2e86c1); }
+.hd-cancer   { background: linear-gradient(135deg,#117a65,#1abc9c); }
+
+/* PLAN CARDS */
+.plan-card { background: white; border-radius: 14px; padding: 22px 20px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); text-align: center; height: 100%; transition: transform .2s; border-top: 4px solid var(--green-btn); }
+.plan-card:hover { transform: translateY(-4px); }
+.plan-card i  { font-size: 2.4rem; margin-bottom: 10px; display: block; }
+.plan-card h5 { font-weight: 700; color: var(--green-dark); margin-bottom: 6px; }
+.plan-card p  { font-size: 0.85rem; color: #666; }
+
+/* TIPS */
+.tips-section { background: var(--green-light); }
+.tip-card { background: white; border-radius: 12px; padding: 18px 16px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.tip-icon { font-size: 1.8rem; flex-shrink: 0; }
+.tip-card h6 { font-weight: 700; color: var(--green-dark); margin-bottom: 4px; font-size: 0.95rem; }
+.tip-card p  { font-size: 0.83rem; color: #555; margin: 0; }
+
+/* REVIEWS */
+.review-card { border: none; border-radius: 14px; box-shadow: 0 3px 14px rgba(0,0,0,0.08); padding: 24px; background: white; height: 100%; }
+.review-stars { color: #f39c12; font-size: 1rem; margin-bottom: 6px; }
+.reviewer-name { font-weight: 700; color: var(--green-dark); font-size: 1rem; }
+.review-text { font-size: 0.88rem; color: #555; margin-top: 8px; line-height: 1.6; }
+
+/* FOOTER */
+footer { background: var(--green-dark); color: white; }
+footer a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.88rem; }
+footer a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); }
+</style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="bi bi-heart-pulse-fill"></i> Green Plate Nutrition
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link active" href="/"><i class="bi bi-house-fill"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/quiz"><i class="bi bi-question-circle-fill"></i> Disease Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="/diet"><i class="bi bi-journal-medical"></i> Diet Plans</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reviews"><i class="bi bi-chat-square-text-fill"></i> Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact"><i class="bi bi-envelope-fill"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ CAROUSEL ══ -->
+<div id="healthCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#healthCarousel" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#healthCarousel" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#healthCarousel" data-bs-slide-to="2"></button>
+  </div>
+  <div class="carousel-inner">
+
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=1400&auto=format&fit=crop" alt="Healthy Fruits">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>🍎 Healthy Fruits</h2>
+        <p>Nature's powerhouse of vitamins, minerals, and antioxidants.</p>
+        <a href="/diet" class="btn btn-success mt-2">Explore Diet Plans</a>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=1400&auto=format&fit=crop" alt="Fresh Vegetables">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>🥦 Fresh Vegetables</h2>
+        <p>Healthy eating starts with colourful, fresh vegetables.</p>
+        <a href="/diet" class="btn btn-success mt-2">View Diet Plans</a>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&auto=format&fit=crop" alt="Diet Plans">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>🩺 Disease-Wise Diet Plans</h2>
+        <p>Eat smart. Stay healthy. Live longer.</p>
+        <a href="/diet" class="btn btn-success mt-2">View Diet Plans</a>
+      </div>
+    </div>
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#healthCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#healthCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- ══ SEARCH ══ -->
+<section class="search-section">
+  <div class="container text-center">
+    <h2 class="section-title">Search Health Information</h2>
+    <p class="section-sub">Find diet plans and disease guides instantly</p>
+    <div class="search-wrap mt-4">
+      <input type="text" id="searchInput" placeholder="e.g. diabetes, fever, headache, cancer…">
+      <button type="button" id="searchButton"><i class="bi bi-search"></i> Search</button>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+</section>
+
+<!-- ══ DISEASE IDENTIFIER QUIZ ══ -->
+<section style="background: linear-gradient(135deg, #27ae60, #1e8449); color: white; padding: 50px 0;">
+  <div class="container text-center">
+    <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+      <i class="bi bi-question-circle-fill" style="font-size: 2rem;"></i> Not Sure Which Disease You Have?
+    </h2>
+    <p style="font-size: 1.05rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
+      Take our smart disease identifier quiz to discover your disease type, understand symptoms, get test recommendations, and receive personalized diet advice.
+    </p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a href="/quiz" style="background: white; color: var(--green-btn); padding: 14px 32px; border-radius: 8px; font-weight: 700; text-decoration: none; transition: all 0.2s;" 
+         onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='white'">
+        🎯 Start Quiz Now
+      </a>
+      <a href="/quiz?disease=diabetes" style="border: 2px solid white; color: white; padding: 12px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.2s;" 
+         onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+        🩸 Check Diabetes
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Disease Guides</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Healthy Foods Listed</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Meal Schedules</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Free Information</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DISEASE GUIDES ══ -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Disease-Wise Diet Plans</h2>
+      <div class="title-line"></div>
+      <p class="section-sub mt-3">Complete guides with types, danger levels, ancient & modern treatments</p>
+    </div>
+    <div class="row g-4">
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card">
+          <div class="card-header hd-diabetes"><i class="bi bi-droplet-fill"></i> Diabetes</div>
+          <div class="card-body">
+            <p>Manage blood sugar with right foods. Covers Type 1, Type 2, Gestational & Prediabetes with full meal plans.</p>
+            <div class="tag-row"><span class="tag">4 Types</span><span class="tag">Danger Levels</span><span class="tag">Diet Plan</span><span class="tag">Ancient & Modern</span></div>
+            <a href="/diet#sec-diabetes" class="btn-card hd-diabetes">View Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card">
+          <div class="card-header hd-bp"><i class="bi bi-heart-pulse-fill"></i> Blood Pressure</div>
+          <div class="card-body">
+            <p>Control hypertension through the DASH diet. All 5 BP stages, sodium targets, and lifestyle changes.</p>
+            <div class="tag-row"><span class="tag">5 Stages</span><span class="tag">DASH Diet</span><span class="tag">Danger Levels</span><span class="tag">Yoga & Herbs</span></div>
+            <a href="/diet#sec-bp" class="btn-card hd-bp">View Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card">
+          <div class="card-header hd-fever"><i class="bi bi-thermometer-high"></i> Fever</div>
+          <div class="card-body">
+            <p>Recovery diet for viral, dengue, typhoid, malaria & bacterial fever with temperature danger levels.</p>
+            <div class="tag-row"><span class="tag">6 Types</span><span class="tag">Temperature</span><span class="tag">Recovery Diet</span><span class="tag">Herbal Remedies</span></div>
+            <a href="/diet#sec-fever" class="btn-card hd-fever">View Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card">
+          <div class="card-header hd-headache"><i class="bi bi-emoji-dizzy-fill"></i> Headache</div>
+          <div class="card-body">
+            <p>Migraine, tension, sinus & cluster headaches. Trigger foods, anti-headache diet & modern treatments.</p>
+            <div class="tag-row"><span class="tag">6 Types</span><span class="tag">Trigger Foods</span><span class="tag">Pain Levels</span><span class="tag">Triptans & Yoga</span></div>
+            <a href="/diet#sec-headache" class="btn-card hd-headache">View Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card">
+          <div class="card-header hd-cancer"><i class="bi bi-ribbon-fill"></i> Cancer</div>
+          <div class="card-body">
+            <p>8 cancer types, all 5 stages explained. Anti-cancer diet, modern therapies & prevention tips.</p>
+            <div class="tag-row"><span class="tag">8 Types</span><span class="tag">5 Stages</span><span class="tag">Anti-Cancer Diet</span><span class="tag">Immunotherapy</span></div>
+            <a href="/diet#sec-cancer" class="btn-card hd-cancer">View Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="disease-card" style="opacity:.75;">
+          <div class="card-header" style="background:linear-gradient(135deg,#7f8c8d,#95a5a6);">
+            <i class="bi bi-plus-circle-fill"></i> More Coming Soon
+          </div>
+       <div class="card-body">
+            <p>Adding guides for Thyroid, Kidney Disease, Asthma, Arthritis, Obesity and more.</p>
+            <div class="tag-row"><span class="tag">Thyroid</span><span class="tag">Kidney</span><span class="tag">Asthma</span><span class="tag">Obesity</span></div>
+            <a href="/contact" class="btn-card" style="background:#7f8c8d;">Request a Guide →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  
+</section>
+
+<!-- ══ POPULAR DIET APPROACHES ══ -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Popular Diet Approaches</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-arrow-down-circle-fill text-success"></i><h5>Weight Loss</h5><p>Low-calorie balanced eating for safe weight reduction.</p></div></div>
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-droplet-half text-danger"></i><h5>Diabetic</h5><p>Low-GI foods to maintain stable blood glucose.</p></div></div>
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-heart-fill text-primary"></i><h5>Heart Health</h5><p>DASH diet for blood pressure and heart protection.</p></div></div>
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-shield-fill-check text-warning"></i><h5>Immunity</h5><p>Vitamin C, zinc and antioxidant-rich foods.</p></div></div>
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-egg-fill text-info"></i><h5>High Protein</h5><p>Muscle building and recovery focused meals.</p></div></div>
+      <div class="col-6 col-md-4 col-lg-2"><div class="plan-card"><i class="bi bi-leaf-fill text-success"></i><h5>Plant-Based</h5><p>Vegetarian and vegan nutritional planning.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DAILY HEALTH TIPS ══ -->
+<section class="tips-section py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Daily Health Tips</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">💧</span><div><h6>Drink 8–10 Glasses of Water</h6><p>Proper hydration prevents headaches, fatigue, and kidney stones. Start every morning with a glass.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">🥗</span><div><h6>Eat a Rainbow of Vegetables</h6><p>Different coloured vegetables provide different vitamins and antioxidants. Aim for 5 servings daily.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">🏃</span><div><h6>Exercise 30 Minutes Daily</h6><p>A brisk 30-minute walk reduces blood pressure, blood sugar, and stress hormones significantly.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">😴</span><div><h6>Sleep 7–8 Hours Every Night</h6><p>Poor sleep raises blood pressure and blood sugar. Consistent sleep is free medicine.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">🚭</span><div><h6>Avoid Tobacco & Excess Alcohol</h6><p>Smoking causes lung cancer, heart disease, and stroke. Quitting at any age improves health.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="tip-card"><span class="tip-icon">🩺</span><div><h6>Get Annual Health Checkups</h6><p>Early detection of diabetes, BP, and cancer improves survival dramatically. Screen regularly.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DISCLAIMER ══ -->
+<div style="background:#fff8e1;border-top:3px solid #f39c12;padding:16px 24px;text-align:center;font-size:0.85rem;color:#7d6608;">
+  ⚠️ <strong>Medical Disclaimer:</strong> All content is for educational purposes only. Always consult a qualified doctor or dietitian before making dietary or medical decisions.
+</div>
+
+<!-- ══ REVIEWS ══ -->
+<section id="reviews" class="py-5" style="background:#f8fdf9;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">What Our Visitors Say</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <div class="reviewer-name">Priya S.</div>
+          <p class="review-text">This website helped me understand diabetes and healthy eating habits. The diet plans are simple, clear and very useful!</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <div class="reviewer-name">Rahul M.</div>
+          <p class="review-text">Very informative website. The blood pressure guide and daily health tips are easy to understand and apply in daily life.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+          <div class="reviewer-name">Anjali K.</div>
+          <p class="review-text">Excellent health information. I learned about disease prevention, ancient remedies and healthy food choices. Highly recommended!</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="review-card">
+          <div class="review-stars">⭐⭐⭐⭐</div>
+          <div class="reviewer-name">AKshay.y</div>
+          <p class="review-text">Excellent health information. I learned about disease prevention, ancient remedies and healthy food choices. Highly recommended!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="pt-4 pb-2">
+  <div class="container">
+    <div class="row g-4 mb-3">
+      <div class="col-md-4">
+        <h5 style="font-weight:700;"><i class="bi bi-heart-pulse-fill"></i> Green Plate Nutrition</h5>
+        <p style="font-size:0.85rem;opacity:0.8;margin-top:8px;">Your trusted source for disease-wise diet plans, nutritional guides, and healthy living tips — completely free.</p>
+      </div>
+      <div class="col-md-4">
+        <h6 style="font-weight:700;">Quick Links</h6>
+        <div class="d-flex flex-column gap-2 mt-2">
+          <a href="/">🏠 Home</a>
+          <a href="/diet">🩺 Disease Diet Plans</a>
+          <a href="#reviews">💬 Reviews</a>
+          <a href="/contact">✉️ Contact Us</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h6 style="font-weight:700;">Disease Guides</h6>
+        <div class="d-flex flex-column gap-2 mt-2">
+          <a href="/diet#sec-diabetes">🩸 Diabetes</a>
+          <a href="/diet#sec-bp">❤️ Blood Pressure</a>
+          <a href="/diet#sec-fever">🤒 Fever</a>
+          <a href="/diet#sec-headache">🤕 Headache</a>
+          <a href="/diet#sec-cancer">🎗 Cancer</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom text-center py-2" style="font-size:0.82rem;opacity:0.7;">
+      © 2026 Green Plate Nutrition. For educational purposes only. Not a substitute for professional medical advice.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const searchData = [
+  { q:['diabetes','sugar','blood sugar','diabetic','insulin'], href:'/diet#sec-diabetes', icon:'🩸', label:'Diabetes – Diet Plan & Complete Guide' },
+  { q:['blood pressure','bp','hypertension','heart','dash'], href:'/diet#sec-bp', icon:'❤️', label:'Blood Pressure – Complete Guide' },
+  { q:['fever','temperature','dengue','malaria','typhoid','viral'], href:'/diet#sec-fever', icon:'🤒', label:'Fever – Recovery Diet & Plan' },
+  { q:['headache','migraine','head pain','sinus','cluster'], href:'/diet#sec-headache', icon:'🤕', label:'Headache – Types & Treatment' },
+  { q:['cancer','tumor','leukemia','chemo','breast','lung'], href:'/diet#sec-cancer', icon:'🎗', label:'Cancer – Prevention & Diet Guide' },
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('searchInput');
+  const button = document.getElementById('searchButton');
+  const box = document.getElementById('searchResults');
+
+  if (!input || !button || !box) {
+    console.error('Search elements not found');
+    return;
+  }
+
+  function doSearch() {
+    const val = input.value.trim().toLowerCase();
+    if (!val) {
+      box.style.display = 'none';
+      return;
+    }
+
+    const tokens = val.split(/\W+/).filter(Boolean);
+    const exactMatch = searchData.filter(item => item.q.some(keyword => keyword.toLowerCase() === val));
+    
+    if (exactMatch.length) {
+      box.innerHTML = exactMatch.map(h =>
+        `<a class="sr-item" href="${h.href}"><i class="bi bi-search" style="color:#27ae60;"></i><span>${h.icon} ${h.label}</span></a>`
+      ).join('');
+      box.style.display = 'block';
+      return;
+    }
+
+    const scored = searchData.map(item => {
+      let score = 0;
+      for (const token of tokens) {
+        for (const keyword of item.q) {
+          const key = keyword.toLowerCase();
+          if (token === key) {
+            score += 100;
+          } else if (token.length >= 4 && (key.includes(token) || token.includes(key))) {
+            score += 10;
+          }
+        }
+      }
+      return { item, score };
+    });
+
+    const bestHits = scored
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(r => r.item);
+
+    if (!bestHits.length) {
+      box.innerHTML = `<div style="padding:14px 20px;color:#888;font-size:0.88rem;">No results found for "<strong>${val}</strong>". Try: diabetes, fever, cancer…</div>`;
+      box.style.display = 'block';
+      return;
+    }
+
+    const uniqueHits = Array.from(new Set(bestHits));
+    box.innerHTML = uniqueHits.map(h =>
+      `<a class="sr-item" href="${h.href}"><i class="bi bi-search" style="color:#27ae60;"></i><span>${h.icon} ${h.label}</span></a>`
+    ).join('');
+    box.style.display = 'block';
+  }
+
+  button.addEventListener('click', doSearch);
+  input.addEventListener('keyup', e => {
+    if (e.key === 'Enter') doSearch();
+    else if (input.value.length > 1) doSearch();
+    else if (!input.value) box.style.display = 'none';
+  });
+  input.addEventListener('blur', () => setTimeout(() => box.style.display = 'none', 200));
+});
+</script>
+</body>
+</html>
